@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_splash"
-    tools:context=".SplashActivity">
+    android:background="@color/bg_splash">
 
     <ImageView
         android:id="@+id/logoImageView"
@@ -69,10 +68,9 @@
                 android:id="@+id/warningIcon"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:background="@drawable/ic_launcher_background"
-                android:backgroundTint="@color/warning_yellow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/img_9" />
 
             <TextView
                 android:id="@+id/noticeTitle"

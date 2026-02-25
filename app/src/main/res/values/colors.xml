@@ -2,9 +2,26 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="bg_color">#FFFBF6</color>
-    <color name="button_color">#D48C71</color>
-    <color name="note_bg">#FFF3EB</color>
-    <color name="text_color">#4A4A4A</color>
-    <color name="note_text_color">#C16E58</color>
+    <color name="bg_splash">#F0F4FF</color>
+    <color name="title_blue">#1A237E</color>
+    <color name="desc_gray">#757575</color>
+    <color name="button_blue">#4A90E2</color>
+    <color name="notice_bg">#FFFFFF</color>
+    <color name="warning_yellow">#FFD54F</color>
+    <color name="icon_bg_blue">#E3F2FD</color>
+    <color name="icon_bg_purple">#F3E5F5</color>
+    <color name="icon_bg_green">#E8F5E9</color>
+    <color name="step_blue">#B2EBF2</color>
+    <color name="step_purple">#E1BEE7</color>
+    <color name="step_green">#C8E6C9</color>
+    <color name="mood_card_bg">#121212</color>
+    <color name="alert_yellow_bg">#FFF9E1</color>
+    <color name="tag_green_bg">#E8F5E9</color>
+    <color name="tag_green_text">#4CAF50</color>
+    <color name="alert_mild">#FFF9E1</color>
+    <color name="alert_moderate">#FFF3EB</color>
+    <color name="alert_high">#FFEBEE</color>
+    <color name="text_mild">#FBC02D</color>
+    <color name="text_moderate">#E67E22</color>
+    <color name="text_high">#E74C3C</color>
 </resources>
