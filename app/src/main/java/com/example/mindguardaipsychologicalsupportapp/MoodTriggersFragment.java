@@ -14,12 +14,24 @@ import java.util.Set;
 
 public class MoodTriggersFragment extends Fragment {
 
+    private int moodImageResId;
+    private String moodName;
+    private int intensityValue;
+    private String thoughts;
     private Set<Integer> selectedTriggerIds = new HashSet<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mood_triggers, container, false);
+
+        // Get passed data
+        if (getArguments() != null) {
+            moodImageResId = getArguments().getInt("moodImage");
+            moodName = getArguments().getString("moodName");
+            intensityValue = getArguments().getInt("intensity");
+            thoughts = getArguments().getString("thoughts");
+        }
 
         int[] cardIds = {
                 R.id.cardWork, R.id.cardRelationships, R.id.cardHealth,
@@ -48,8 +60,14 @@ public class MoodTriggersFragment extends Fragment {
         });
 
         view.findViewById(R.id.btnReviewEntry).setOnClickListener(v -> {
-            // Finish flow and go to home
-            Navigation.findNavController(view).navigate(R.id.action_moodTriggersFragment_to_homeFragment);
+            Bundle bundle = new Bundle();
+            bundle.putInt("moodImage", moodImageResId);
+            bundle.putString("moodName", moodName);
+            bundle.putInt("intensity", intensityValue);
+            bundle.putString("thoughts", thoughts);
+            // In a real app, you'd pass the list of selected triggers too
+            
+            Navigation.findNavController(view).navigate(R.id.action_moodTriggersFragment_to_reviewEntryFragment, bundle);
         });
 
         return view;

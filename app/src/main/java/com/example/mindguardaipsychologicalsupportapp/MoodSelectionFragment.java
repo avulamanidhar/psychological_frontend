@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ public class MoodSelectionFragment extends Fragment {
 
     private MaterialCardView selectedMoodCard = null;
     private int selectedImageResId = -1;
+    private String selectedMoodName = "";
 
     @Nullable
     @Override
@@ -30,6 +32,10 @@ public class MoodSelectionFragment extends Fragment {
                 R.drawable.img_32, R.drawable.img_33, R.drawable.img_34, R.drawable.img_35
         };
 
+        String[] moodNames = {
+                "Great", "Good", "Okay", "Low", "Sad", "Anxious", "Frustrated", "Tired"
+        };
+
         for (int i = 0; i < moodCardIds.length; i++) {
             final int index = i;
             MaterialCardView card = view.findViewById(moodCardIds[i]);
@@ -40,6 +46,7 @@ public class MoodSelectionFragment extends Fragment {
                     }
                     selectedMoodCard = card;
                     selectedImageResId = moodImages[index];
+                    selectedMoodName = moodNames[index];
                     selectedMoodCard.setStrokeColor(getResources().getColor(R.color.button_blue));
                     selectedMoodCard.setStrokeWidth(4);
 
@@ -54,6 +61,7 @@ public class MoodSelectionFragment extends Fragment {
             if (selectedMoodCard != null) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("moodImage", selectedImageResId);
+                bundle.putString("moodName", selectedMoodName);
                 Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_moodIntensityFragment, bundle);
             }
         });

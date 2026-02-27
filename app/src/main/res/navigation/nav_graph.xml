@@ -203,7 +203,22 @@
         android:label="MoodTriggersFragment"
         tools:layout="@layout/fragment_mood_triggers">
         <action
+            android:id="@+id/action_moodTriggersFragment_to_reviewEntryFragment"
+            app:destination="@id/reviewEntryFragment" />
+        <action
             android:id="@+id/action_moodTriggersFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviewEntryFragment"
+        android:name="com.example.mindguardaipsychologicalsupportapp.ReviewEntryFragment"
+        android:label="ReviewEntryFragment"
+        tools:layout="@layout/fragment_review_entry">
+        <action
+            android:id="@+id/action_reviewEntryFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />

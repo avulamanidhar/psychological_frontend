@@ -16,6 +16,10 @@ import com.google.android.material.slider.Slider;
 
 public class MoodIntensityFragment extends Fragment {
 
+    private int moodImageResId = R.drawable.img_28;
+    private String moodName = "Great";
+    private int intensityValue = 14;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,21 +30,22 @@ public class MoodIntensityFragment extends Fragment {
         TextView txtPercent = view.findViewById(R.id.txtIntensityPercent);
         TextView txtDesc = view.findViewById(R.id.txtIntensityDesc);
 
-        // Get passed mood image
+        // Get passed mood data
         if (getArguments() != null) {
-            int moodImageResId = getArguments().getInt("moodImage", R.drawable.img_28);
+            moodImageResId = getArguments().getInt("moodImage", R.drawable.img_28);
+            moodName = getArguments().getString("moodName", "Great");
             imgMoodEmoji.setImageResource(moodImageResId);
         }
 
         slider.addOnChangeListener((s, value, fromUser) -> {
-            int progress = (int) value;
-            txtPercent.setText(progress + "%");
+            intensityValue = (int) value;
+            txtPercent.setText(intensityValue + "%");
             
-            if (progress < 30) {
+            if (intensityValue < 30) {
                 txtDesc.setText("Feeling quite calm and centered");
                 slider.setTrackActiveTintList(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
                 slider.setThumbStrokeColor(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
-            } else if (progress < 70) {
+            } else if (intensityValue < 70) {
                 txtDesc.setText("Manageable");
                 slider.setTrackActiveTintList(ColorStateList.valueOf(Color.parseColor("#4A90E2")));
                 slider.setThumbStrokeColor(ColorStateList.valueOf(Color.parseColor("#4A90E2")));
@@ -56,15 +61,18 @@ public class MoodIntensityFragment extends Fragment {
         });
 
         view.findViewById(R.id.btnNext).setOnClickListener(v -> {
-            // Navigate to thoughts page
-            Navigation.findNavController(view).navigate(R.id.action_moodIntensityFragment_to_moodThoughtsFragment);
+            Bundle bundle = new Bundle();
+            bundle.putInt("moodImage", moodImageResId);
+            bundle.putString("moodName", moodName);
+            bundle.putInt("intensity", intensityValue);
+            Navigation.findNavController(view).navigate(R.id.action_moodIntensityFragment_to_moodThoughtsFragment, bundle);
         });
 
         // Bottom Navigation
         View btnNavHome = view.findViewById(R.id.btnNavHome);
         if (btnNavHome != null) {
             btnNavHome.setOnClickListener(v -> 
-                Navigation.findNavController(view).navigate(R.id.action_moodIntensityFragment_to_homeFragment));
+                Navigation.findNavController(view).navigate(R.id.homeFragment));
         }
 
         return view;

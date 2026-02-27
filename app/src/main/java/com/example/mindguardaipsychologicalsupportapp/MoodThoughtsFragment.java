@@ -15,10 +15,21 @@ import androidx.navigation.Navigation;
 
 public class MoodThoughtsFragment extends Fragment {
 
+    private int moodImageResId;
+    private String moodName;
+    private int intensityValue;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mood_thoughts, container, false);
+
+        // Get passed data
+        if (getArguments() != null) {
+            moodImageResId = getArguments().getInt("moodImage");
+            moodName = getArguments().getString("moodName");
+            intensityValue = getArguments().getInt("intensity");
+        }
 
         EditText etThoughts = view.findViewById(R.id.etThoughts);
         TextView txtCharCount = view.findViewById(R.id.txtCharCount);
@@ -50,8 +61,13 @@ public class MoodThoughtsFragment extends Fragment {
         });
 
         view.findViewById(R.id.btnNext).setOnClickListener(v -> {
-            // Navigate to Any Triggers page
-            Navigation.findNavController(view).navigate(R.id.action_moodThoughtsFragment_to_moodTriggersFragment);
+            Bundle bundle = new Bundle();
+            bundle.putInt("moodImage", moodImageResId);
+            bundle.putString("moodName", moodName);
+            bundle.putInt("intensity", intensityValue);
+            bundle.putString("thoughts", etThoughts.getText().toString());
+            
+            Navigation.findNavController(view).navigate(R.id.action_moodThoughtsFragment_to_moodTriggersFragment, bundle);
         });
 
         return view;
