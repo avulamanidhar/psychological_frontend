@@ -24,4 +24,7 @@
     <color name="text_mild">#FBC02D</color>
     <color name="text_moderate">#E67E22</color>
     <color name="text_high">#E74C3C</color>
+    <color name="line_mood">#4A90E2</color>
+    <color name="line_anxiety">#9C27B0</color>
+    <color name="line_stress">#FF9800</color>
 </resources>
