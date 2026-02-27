@@ -202,6 +202,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/btnTryNow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/alertSub"
@@ -210,7 +211,9 @@
                         android:layout_toEndOf="@+id/alertIcon"
                         android:text="Try now →"
                         android:textColor="@color/button_blue"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:clickable="true"
+                        android:focusable="true" />
 
                     <ImageView
                         android:layout_width="20dp"
@@ -297,13 +300,16 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:columnCount="2">
 
                 <LinearLayout
+                    android:id="@+id/btnLogMood"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
                     <ImageView
@@ -320,9 +326,12 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnChatWithAI"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
                     <ImageView
@@ -339,9 +348,12 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnRelax"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
                     <ImageView
@@ -358,9 +370,12 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnInsights"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:padding="12dp">
                     <ImageView
@@ -434,12 +449,15 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/btnViewFullAnalysis"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="View Full Analysis →"
                         android:textColor="@color/button_blue"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:clickable="true"
+                        android:focusable="true" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -460,10 +478,13 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnAlertMild"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardBackgroundColor="@color/alert_mild"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
@@ -480,10 +501,13 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnAlertModerate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardBackgroundColor="@color/alert_moderate"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
@@ -500,10 +524,13 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnAlertHigh"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardBackgroundColor="@color/alert_high"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
@@ -540,9 +567,12 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/btnNavHome"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
@@ -559,15 +589,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnNavMood"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img_16" />
+                    android:src="@drawable/img_36" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -577,15 +610,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnNavChat"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img_19" />
+                    android:src="@drawable/img_37" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -595,15 +631,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnNavTools"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img_10" />
+                    android:src="@drawable/img_38" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -613,15 +652,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnNavProfile"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img_18" />
+                    android:src="@drawable/img_39" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
