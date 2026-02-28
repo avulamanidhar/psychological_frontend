@@ -10,7 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReviewEntryFragment extends Fragment {
 
@@ -23,12 +27,22 @@ public class ReviewEntryFragment extends Fragment {
         TextView txtMoodNameReview = view.findViewById(R.id.txtMoodNameReview);
         LinearProgressIndicator progressIntensity = view.findViewById(R.id.progressIntensityReview);
         TextView txtIntensity = view.findViewById(R.id.txtIntensityReview);
+        ChipGroup chipGroup = view.findViewById(R.id.chipGroupTriggersReview);
+
+        int moodImage = R.drawable.img_28;
+        int intensity = 50;
+        String moodName = "Great";
+        String thoughts = "";
+        ArrayList<String> triggers = new ArrayList<>();
 
         // Get data from bundle
         if (getArguments() != null) {
-            int moodImage = getArguments().getInt("moodImage", R.drawable.img_28);
-            int intensity = getArguments().getInt("intensity", 50);
-            String moodName = getArguments().getString("moodName", "Great");
+            moodImage = getArguments().getInt("moodImage", R.drawable.img_28);
+            intensity = getArguments().getInt("intensity", 50);
+            moodName = getArguments().getString("moodName", "Great");
+            thoughts = getArguments().getString("thoughts", "");
+            ArrayList<String> t = getArguments().getStringArrayList("triggers");
+            if (t != null) triggers = t;
 
             imgMoodReview.setImageResource(moodImage);
             txtMoodNameReview.setText(moodName);
@@ -36,12 +50,36 @@ public class ReviewEntryFragment extends Fragment {
             txtIntensity.setText(intensity + " % intensity");
         }
 
+        if (chipGroup != null) {
+            chipGroup.removeAllViews();
+            if (triggers.isEmpty()) {
+                chipGroup.setVisibility(View.GONE);
+            } else {
+                chipGroup.setVisibility(View.VISIBLE);
+                for (String tr : triggers) {
+                    Chip c = new Chip(requireContext());
+                    c.setText(tr);
+                    c.setClickable(false);
+                    c.setCheckable(false);
+                    chipGroup.addView(c);
+                }
+            }
+        }
+
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
             Navigation.findNavController(view).navigateUp();
         });
 
+        final int finalMoodImage = moodImage;
+        final int finalIntensity = intensity;
+        final String finalMoodName = moodName;
+        final String finalThoughts = thoughts;
+        final List<String> finalTriggers = triggers;
+
         view.findViewById(R.id.btnSaveEntry).setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_homeFragment);
+            MoodEntry entry = MoodEntry.createNow(finalMoodName, finalMoodImage, finalIntensity, finalTriggers, finalThoughts);
+            MoodEntryStorage.add(requireContext(), entry);
+            Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_moodHistoryFragment);
         });
 
         return view;

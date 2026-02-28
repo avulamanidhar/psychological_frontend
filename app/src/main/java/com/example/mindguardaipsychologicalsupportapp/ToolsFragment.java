@@ -16,6 +16,32 @@ public class ToolsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tools, container, false);
 
+        View btnBack = view.findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        }
+
+        View cardMeditation = view.findViewById(R.id.cardMeditation);
+        if (cardMeditation != null) {
+            cardMeditation.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolMeditationFragment));
+        }
+        View cardGrounding = view.findViewById(R.id.cardGrounding);
+        if (cardGrounding != null) {
+            cardGrounding.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolGroundingFragment));
+        }
+        View cardBreathing = view.findViewById(R.id.cardBreathing);
+        if (cardBreathing != null) {
+            cardBreathing.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolCompleteFragment));
+        }
+        View cardFocusTimer = view.findViewById(R.id.cardFocusTimer);
+        if (cardFocusTimer != null) {
+            cardFocusTimer.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolCompleteFragment));
+        }
+        View cardSelfCare = view.findViewById(R.id.cardSelfCare);
+        if (cardSelfCare != null) {
+            cardSelfCare.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolCompleteFragment));
+        }
+
         // Bottom Navigation Listeners
         View btnNavHome = view.findViewById(R.id.btnNavHome);
         if (btnNavHome != null) {

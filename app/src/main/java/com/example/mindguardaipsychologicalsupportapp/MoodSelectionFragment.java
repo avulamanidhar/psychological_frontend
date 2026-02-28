@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -65,6 +64,12 @@ public class MoodSelectionFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_moodIntensityFragment, bundle);
             }
         });
+
+        View btnViewHistory = view.findViewById(R.id.btnViewHistory);
+        if (btnViewHistory != null) {
+            btnViewHistory.setOnClickListener(v ->
+                    Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_moodHistoryFragment));
+        }
 
         // Bottom Navigation Logic
         View btnNavHome = view.findViewById(R.id.btnNavHome);

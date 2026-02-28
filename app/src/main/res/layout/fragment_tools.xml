@@ -7,17 +7,31 @@
     android:background="@color/bg_splash">
 
     <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="‹ Back"
+        android:textColor="@color/desc_gray"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/titleTools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
-        android:text="Wellness Tools"
+        android:layout_marginTop="16dp"
+        android:text="Tools"
         android:textColor="@color/title_blue"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
 
     <TextView
         android:id="@+id/subtitleTools"
@@ -42,6 +56,7 @@
 
         <!-- Breathing -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBreathing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -51,7 +66,7 @@
             app:cardElevation="0dp">
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:background="@drawable/ic_launcher_background" android:backgroundTint="#FFFFFF" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:text="5 min" android:textColor="#4CAF50" android:textSize="10sp" android:textStyle="bold" />
-                <ImageView android:id="@+id/imgBreathing" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/img_40" />
+                <ImageView android:id="@+id/imgBreathing" android:layout_width="48dp" android:layout_height="48dp" android:scaleType="centerInside" android:adjustViewBounds="true" android:src="@drawable/img_40" />
                 <TextView android:id="@+id/txtBreathing" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/imgBreathing" android:layout_marginTop="12dp" android:text="Breathing" android:textColor="@color/title_blue" android:textStyle="bold" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/txtBreathing" android:text="4-7-8 Technique" android:textColor="@color/desc_gray" android:textSize="12sp" />
             </RelativeLayout>
@@ -59,6 +74,7 @@
 
         <!-- Meditation -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMeditation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -68,7 +84,7 @@
             app:cardElevation="0dp">
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:background="@drawable/ic_launcher_background" android:backgroundTint="#FFFFFF" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:text="10 min" android:textColor="#9C27B0" android:textSize="10sp" android:textStyle="bold" />
-                <ImageView android:id="@+id/imgMeditation" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/img_41" />
+                <ImageView android:id="@+id/imgMeditation" android:layout_width="48dp" android:layout_height="48dp" android:scaleType="centerInside" android:adjustViewBounds="true" android:src="@drawable/img_41" />
                 <TextView android:id="@+id/txtMeditation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/imgMeditation" android:layout_marginTop="12dp" android:text="Meditation" android:textColor="@color/title_blue" android:textStyle="bold" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/txtMeditation" android:text="Guided session" android:textColor="@color/desc_gray" android:textSize="12sp" />
             </RelativeLayout>
@@ -76,6 +92,7 @@
 
         <!-- Grounding -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardGrounding"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -85,7 +102,7 @@
             app:cardElevation="0dp">
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:background="@drawable/ic_launcher_background" android:backgroundTint="#FFFFFF" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:text="5 min" android:textColor="#2196F3" android:textSize="10sp" android:textStyle="bold" />
-                <ImageView android:id="@+id/imgGrounding" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/img_42" />
+                <ImageView android:id="@+id/imgGrounding" android:layout_width="48dp" android:layout_height="48dp" android:scaleType="centerInside" android:adjustViewBounds="true" android:src="@drawable/img_42" />
                 <TextView android:id="@+id/txtGrounding" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/imgGrounding" android:layout_marginTop="12dp" android:text="Grounding" android:textColor="@color/title_blue" android:textStyle="bold" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/txtGrounding" android:text="5-4-3-2-1 Method" android:textColor="@color/desc_gray" android:textSize="12sp" />
             </RelativeLayout>
@@ -93,6 +110,7 @@
 
         <!-- Focus Timer -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardFocusTimer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -102,7 +120,7 @@
             app:cardElevation="0dp">
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:background="@drawable/ic_launcher_background" android:backgroundTint="#FFFFFF" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:text="25 min" android:textColor="#FF9800" android:textSize="10sp" android:textStyle="bold" />
-                <ImageView android:id="@+id/imgFocus" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/img_43" />
+                <ImageView android:id="@+id/imgFocus" android:layout_width="48dp" android:layout_height="48dp" android:scaleType="centerInside" android:adjustViewBounds="true" android:src="@drawable/img_43" />
                 <TextView android:id="@+id/txtFocus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/imgFocus" android:layout_marginTop="12dp" android:text="Focus Timer" android:textColor="@color/title_blue" android:textStyle="bold" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/txtFocus" android:text="Pomodoro technique" android:textColor="@color/desc_gray" android:textSize="12sp" />
             </RelativeLayout>
@@ -110,6 +128,7 @@
 
         <!-- Self-Care -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSelfCare"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -119,7 +138,7 @@
             app:cardElevation="0dp">
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:background="@drawable/ic_launcher_background" android:backgroundTint="#FFFFFF" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:text="2 min" android:textColor="#FBC02D" android:textSize="10sp" android:textStyle="bold" />
-                <ImageView android:id="@+id/imgSelfCare" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/img_44" />
+                <ImageView android:id="@+id/imgSelfCare" android:layout_width="48dp" android:layout_height="48dp" android:scaleType="centerInside" android:adjustViewBounds="true" android:src="@drawable/img_44" />
                 <TextView android:id="@+id/txtSelfCare" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/imgSelfCare" android:layout_marginTop="12dp" android:text="Self-Care" android:textColor="@color/title_blue" android:textStyle="bold" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/txtSelfCare" android:text="Daily checklist" android:textColor="@color/desc_gray" android:textSize="12sp" />
             </RelativeLayout>
