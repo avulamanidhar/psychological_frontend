@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.google.android.material.card.MaterialCardView;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,11 +66,31 @@ public class MoodTriggersFragment extends Fragment {
             bundle.putString("moodName", moodName);
             bundle.putInt("intensity", intensityValue);
             bundle.putString("thoughts", thoughts);
-            // In a real app, you'd pass the list of selected triggers too
+
+            ArrayList<String> triggerNames = new ArrayList<>();
+            for (int id : selectedTriggerIds) {
+                String t = mapTriggerIdToName(id);
+                if (t != null) triggerNames.add(t);
+            }
+            bundle.putStringArrayList("triggers", triggerNames);
             
             Navigation.findNavController(view).navigate(R.id.action_moodTriggersFragment_to_reviewEntryFragment, bundle);
         });
 
         return view;
+    }
+
+    @Nullable
+    private String mapTriggerIdToName(int id) {
+        if (id == R.id.cardWork) return "Work";
+        if (id == R.id.cardRelationships) return "Relationships";
+        if (id == R.id.cardHealth) return "Health";
+        if (id == R.id.cardFinance) return "Finance";
+        if (id == R.id.cardFamily) return "Family";
+        if (id == R.id.cardAcademic) return "Academic";
+        if (id == R.id.cardSleep) return "Sleep";
+        if (id == R.id.cardSocial) return "Social";
+        if (id == R.id.cardOther) return "Other";
+        return null;
     }
 }

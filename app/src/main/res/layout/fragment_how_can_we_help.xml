@@ -70,6 +70,8 @@
                     android:id="@+id/iconChat"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
                     android:src="@drawable/img_19" />
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -97,8 +99,7 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_launcher_background"
-                    android:backgroundTint="#F0F0F0" />
+                    android:src="@drawable/option_radio_unchecked" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -118,6 +119,8 @@
                     android:id="@+id/iconBreathing"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
                     android:src="@drawable/img_20" />
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -145,8 +148,7 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_launcher_background"
-                    android:backgroundTint="#F0F0F0" />
+                    android:src="@drawable/option_radio_unchecked" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -166,6 +168,8 @@
                     android:id="@+id/iconMeditation"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
                     android:src="@drawable/img_21" />
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -193,8 +197,7 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_launcher_background"
-                    android:backgroundTint="#F0F0F0" />
+                    android:src="@drawable/option_radio_unchecked" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -214,6 +217,8 @@
                     android:id="@+id/iconJournaling"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
                     android:src="@drawable/img_22" />
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -241,8 +246,7 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_launcher_background"
-                    android:backgroundTint="#F0F0F0" />
+                    android:src="@drawable/option_radio_unchecked" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -262,6 +266,8 @@
                     android:id="@+id/iconAlerts"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
                     android:src="@drawable/img_23" />
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -289,8 +295,7 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_launcher_background"
-                    android:backgroundTint="#F0F0F0" />
+                    android:src="@drawable/option_radio_unchecked" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -303,11 +308,11 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#D1D9E6"
-        android:enabled="false"
-        android:text="Next"
+        android:backgroundTint="@color/button_blue"
+        android:enabled="true"
+        android:text="Next  →"
         android:textAllCaps="false"
-        android:textColor="@color/desc_gray"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
