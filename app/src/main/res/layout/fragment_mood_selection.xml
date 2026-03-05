@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
         app:layout_constraintTop_toBottomOf="@+id/subtitleMood">
 
-        <!-- Mood Cards - Tall Style with updated images -->
+        <!-- Mood Cards -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardGreat"
             android:layout_width="0dp"
@@ -234,7 +234,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_17" app:tint="@color/desc_gray"/>
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_69" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/desc_gray" android:textSize="10sp" />
             </LinearLayout>
 
@@ -247,7 +247,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_36" app:tint="@color/button_blue" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_75" app:tint="@color/button_blue" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mood" android:textColor="@color/button_blue" android:textSize="10sp" />
             </LinearLayout>
 
@@ -260,7 +260,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_37" app:tint="@color/desc_gray" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_37" android:tint="@color/desc_gray" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chat" android:textColor="@color/desc_gray" android:textSize="10sp" />
             </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class ToolGroundingFragment extends Fragment {
     };
     private static final int[] NUMBERS = { 5, 4, 3, 2, 1 };
     private static final int[] BAR_IDS = { R.id.bar1, R.id.bar2, R.id.bar3, R.id.bar4, R.id.bar5 };
+    private static final int[] ICON_IDS = { R.drawable.img_70, R.drawable.img_71, R.drawable.img_72, R.drawable.img_73, R.drawable.img_74 };
 
     @Nullable
     @Override
@@ -55,6 +57,7 @@ public class ToolGroundingFragment extends Fragment {
         TextView stepPhrase = view.findViewById(R.id.stepPhrase);
         TextView stepInstruction = view.findViewById(R.id.stepInstruction);
         TextView stepCounter = view.findViewById(R.id.stepCounter);
+        ImageView stepIcon = view.findViewById(R.id.stepIcon);
         Button btnPrevious = view.findViewById(R.id.btnPrevious);
         Button btnNext = view.findViewById(R.id.btnNext);
 
@@ -62,6 +65,7 @@ public class ToolGroundingFragment extends Fragment {
         if (stepPhrase != null) stepPhrase.setText(PHRASES[currentStep - 1]);
         if (stepInstruction != null) stepInstruction.setText(INSTRUCTIONS[currentStep - 1]);
         if (stepCounter != null) stepCounter.setText("Step " + currentStep + " of 5");
+        if (stepIcon != null) stepIcon.setImageResource(ICON_IDS[currentStep - 1]);
 
         if (currentStep == 5) {
             if (btnNext != null) {
@@ -83,7 +87,9 @@ public class ToolGroundingFragment extends Fragment {
         if (btnNext != null) {
             btnNext.setOnClickListener(v -> {
                 if (currentStep >= 5) {
-                    Navigation.findNavController(view).navigate(R.id.action_toolGroundingFragment_to_toolCompleteFragment);
+                    Bundle b = new Bundle();
+                    b.putString("exerciseName", "Grounding");
+                    Navigation.findNavController(view).navigate(R.id.action_toolGroundingFragment_to_toolCompleteFragment, b);
                 } else {
                     Bundle b = new Bundle();
                     b.putInt("step", currentStep + 1);
@@ -101,7 +107,7 @@ public class ToolGroundingFragment extends Fragment {
         View btnNavTools = view.findViewById(R.id.btnNavTools);
         if (btnNavTools != null) btnNavTools.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolGroundingFragment_to_toolsFragment));
         View btnNavProfile = view.findViewById(R.id.btnNavProfile);
-        if (btnNavProfile != null) btnNavProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolGroundingFragment_to_profileOverviewFragment));
+        if (btnNavProfile != null) btnNavProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolGroundingFragment_to_settingsFragment));
 
         return view;
     }

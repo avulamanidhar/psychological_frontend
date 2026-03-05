@@ -72,12 +72,10 @@ public class MoodSelectionFragment extends Fragment {
         }
 
         // Bottom Navigation Logic
-        View btnNavHome = view.findViewById(R.id.btnNavHome);
-        if (btnNavHome != null) {
-            btnNavHome.setOnClickListener(v -> {
-                Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_homeFragment);
-            });
-        }
+        view.findViewById(R.id.btnNavHome).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_homeFragment));
+        view.findViewById(R.id.btnNavChat).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_chatFragment));
+        view.findViewById(R.id.btnNavTools).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_toolsFragment));
+        view.findViewById(R.id.btnNavProfile).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_moodSelectionFragment_to_settingsFragment));
 
         return view;
     }

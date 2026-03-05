@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_splash">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/headerMeditation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="‹"
+                android:textColor="@color/desc_gray"
+                android:textSize="32sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Meditation"
+            android:textColor="@color/title_blue"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btnSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_menu_manage"
+            app:tint="@color/desc_gray" />
+    </RelativeLayout>
+
+    <!-- Tabs -->
+    <LinearLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/headerMeditation">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tabCalm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@color/button_blue"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="horizontal" android:padding="10dp">
+                <ImageView android:id="@+id/imgCalm" android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/img_40" app:tint="@color/white" />
+                <TextView android:id="@+id/txtCalm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Calm" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tabFocus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="horizontal" android:padding="10dp">
+                <ImageView android:id="@+id/imgFocus" android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/img_43" />
+                <TextView android:id="@+id/txtFocus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Focus" android:textColor="@color/desc_gray" android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tabSleep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="horizontal" android:padding="10dp">
+                <ImageView android:id="@+id/imgSleep" android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/img_36" />
+                <TextView android:id="@+id/txtSleep" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Sleep" android:textColor="@color/desc_gray" android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- Timer Circle -->
+    <RelativeLayout
+        android:id="@+id/timerContainer"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="120dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="05:00"
+                    android:textColor="@color/title_blue"
+                    android:textSize="48sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/txtStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Ready to start"
+                    android:textColor="@color/desc_gray"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+    <!-- Time Selection Chips -->
+    <LinearLayout
+        android:id="@+id/timeChips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerContainer">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/chip5m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@color/button_blue"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+            <TextView android:id="@+id/txt5m" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingVertical="6dp" android:text="5m" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/chip10m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="#F0F4FF"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+            <TextView android:id="@+id/txt10m" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingVertical="6dp" android:text="10m" android:textColor="@color/desc_gray" android:textSize="12sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/chip15m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="#F0F4FF"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+            <TextView android:id="@+id/txt15m" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingVertical="6dp" android:text="15m" android:textColor="@color/desc_gray" android:textSize="12sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/chip20m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#F0F4FF"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+            <TextView android:id="@+id/txt20m" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingVertical="6dp" android:text="20m" android:textColor="@color/desc_gray" android:textSize="12sp" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- Bottom Controls -->
+    <LinearLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/btnReset"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/desc_gray" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="48dp"
+            android:src="@android:drawable/ic_media_play"
+            app:backgroundTint="@color/button_blue"
+            app:elevation="4dp"
+            app:fabSize="normal"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/btnMusic"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_lock_silent_mode_off"
+            app:tint="@color/desc_gray" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

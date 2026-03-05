@@ -31,15 +31,15 @@ public class ToolsFragment extends Fragment {
         }
         View cardBreathing = view.findViewById(R.id.cardBreathing);
         if (cardBreathing != null) {
-            cardBreathing.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolCompleteFragment));
+            cardBreathing.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolBreathingFragment));
         }
         View cardFocusTimer = view.findViewById(R.id.cardFocusTimer);
         if (cardFocusTimer != null) {
-            cardFocusTimer.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolCompleteFragment));
+            cardFocusTimer.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolFocusTimerFragment));
         }
         View cardSelfCare = view.findViewById(R.id.cardSelfCare);
         if (cardSelfCare != null) {
-            cardSelfCare.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolCompleteFragment));
+            cardSelfCare.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_toolSelfCareFragment));
         }
 
         // Bottom Navigation Listeners
@@ -61,6 +61,13 @@ public class ToolsFragment extends Fragment {
         if (btnNavChat != null) {
             btnNavChat.setOnClickListener(v -> {
                 Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_chatFragment);
+            });
+        }
+
+        View btnNavProfile = view.findViewById(R.id.btnNavProfile);
+        if (btnNavProfile != null) {
+            btnNavProfile.setOnClickListener(v -> {
+                Navigation.findNavController(view).navigate(R.id.action_toolsFragment_to_settingsFragment);
             });
         }
 

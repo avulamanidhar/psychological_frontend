@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_splash">
+
+    <TextView
+        android:id="@+id/titleSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:text="Settings"
+        android:textColor="@color/title_blue"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleSettings">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Profile Settings -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAccountInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <ImageView android:id="@+id/iconProfile" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_person" app:tint="@color/button_blue" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_toEndOf="@+id/iconProfile" android:text="Account Information" android:textColor="@color/title_blue" android:textStyle="bold" />
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_launcher_foreground" app:tint="@color/desc_gray" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Privacy & Security -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPrivacySecurity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <ImageView android:id="@+id/iconPrivacy" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_lock" app:tint="@color/button_blue" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_toEndOf="@+id/iconPrivacy" android:text="Privacy &amp; Security" android:textColor="@color/title_blue" android:textStyle="bold" />
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_launcher_foreground" app:tint="@color/desc_gray" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- AI Transparency -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAiTransparency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <ImageView android:id="@+id/iconAi" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_10" app:tint="@color/button_blue" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_toEndOf="@+id/iconAi" android:text="AI Transparency" android:textColor="@color/title_blue" android:textStyle="bold" />
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_launcher_foreground" app:tint="@color/desc_gray" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Notifications -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <ImageView android:id="@+id/iconNotif" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_23" app:tint="@color/button_blue" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_toEndOf="@+id/iconNotif" android:text="Notifications" android:textColor="@color/title_blue" android:textStyle="bold" />
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_launcher_foreground" app:tint="@color/desc_gray" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:layout_marginStart="8dp" android:text="Support" android:textColor="@color/desc_gray" android:textStyle="bold" android:textSize="12sp" />
+
+            <!-- Help & FAQ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHelpFaq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Help &amp; FAQ" android:textColor="@color/title_blue" android:textStyle="bold" />
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_launcher_foreground" app:tint="@color/desc_gray" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Feedback -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Feedback &amp; Contact" android:textColor="@color/title_blue" android:textStyle="bold" />
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_launcher_foreground" app:tint="@color/desc_gray" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Logout -->
+            <TextView
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_gravity="center"
+                android:text="Logout"
+                android:textColor="#F44336"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"
+                android:text="Version 1.0.0"
+                android:textColor="@color/desc_gray"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottomNavContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/btnNavHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_69" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/desc_gray" android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnNavMood"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_75" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mood" android:textColor="@color/desc_gray" android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnNavChat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_37" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chat" android:textColor="@color/desc_gray" android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnNavTools"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_38" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tools" android:textColor="@color/desc_gray" android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnNavProfile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_39" app:tint="@color/button_blue" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profile" android:textColor="@color/button_blue" android:textSize="10sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

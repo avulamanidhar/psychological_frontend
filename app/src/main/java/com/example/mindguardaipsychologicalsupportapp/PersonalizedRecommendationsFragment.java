@@ -16,11 +16,25 @@ public class PersonalizedRecommendationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personalized_recommendations, container, false);
 
+        View breathingCard = view.findViewById(R.id.cardBreathingRecommendation);
+        if (breathingCard != null) {
+            breathingCard.setOnClickListener(v -> 
+                Navigation.findNavController(view).navigate(R.id.action_personalizedRecommendationsFragment_to_toolBreathingFragment)
+            );
+        }
+
+        View meditationCard = view.findViewById(R.id.cardMeditationRecommendation);
+        if (meditationCard != null) {
+            meditationCard.setOnClickListener(v -> 
+                Navigation.findNavController(view).navigate(R.id.action_personalizedRecommendationsFragment_to_toolMeditationFragment)
+            );
+        }
+
         View btnBack = view.findViewById(R.id.btnBack);
         if (btnBack != null) {
-            btnBack.setOnClickListener(v -> {
-                Navigation.findNavController(view).navigateUp();
-            });
+            btnBack.setOnClickListener(v -> 
+                Navigation.findNavController(view).navigateUp()
+            );
         }
 
         return view;

@@ -9,9 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.google.android.material.card.MaterialCardView;
+import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MoodTriggersFragment extends Fragment {
 
@@ -19,14 +20,13 @@ public class MoodTriggersFragment extends Fragment {
     private String moodName;
     private int intensityValue;
     private String thoughts;
-    private Set<Integer> selectedTriggerIds = new HashSet<>();
+    private Map<Integer, String> selectedTriggers = new HashMap<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mood_triggers, container, false);
 
-        // Get passed data
         if (getArguments() != null) {
             moodImageResId = getArguments().getInt("moodImage");
             moodName = getArguments().getString("moodName");
@@ -40,15 +40,21 @@ public class MoodTriggersFragment extends Fragment {
                 R.id.cardSleep, R.id.cardSocial, R.id.cardOther
         };
 
-        for (int id : cardIds) {
+        String[] triggerNames = {
+                "Work", "Relationships", "Health", "Finance", "Family", "Academic", "Sleep", "Social", "Other"
+        };
+
+        for (int i = 0; i < cardIds.length; i++) {
+            final int id = cardIds[i];
+            final String name = triggerNames[i];
             MaterialCardView card = view.findViewById(id);
             if (card != null) {
                 card.setOnClickListener(v -> {
-                    if (selectedTriggerIds.contains(id)) {
-                        selectedTriggerIds.remove(id);
+                    if (selectedTriggers.containsKey(id)) {
+                        selectedTriggers.remove(id);
                         card.setStrokeWidth(0);
                     } else {
-                        selectedTriggerIds.add(id);
+                        selectedTriggers.put(id, name);
                         card.setStrokeColor(getResources().getColor(R.color.button_blue));
                         card.setStrokeWidth(4);
                     }
@@ -66,31 +72,11 @@ public class MoodTriggersFragment extends Fragment {
             bundle.putString("moodName", moodName);
             bundle.putInt("intensity", intensityValue);
             bundle.putString("thoughts", thoughts);
-
-            ArrayList<String> triggerNames = new ArrayList<>();
-            for (int id : selectedTriggerIds) {
-                String t = mapTriggerIdToName(id);
-                if (t != null) triggerNames.add(t);
-            }
-            bundle.putStringArrayList("triggers", triggerNames);
+            bundle.putStringArrayList("triggers", new ArrayList<>(selectedTriggers.values()));
             
             Navigation.findNavController(view).navigate(R.id.action_moodTriggersFragment_to_reviewEntryFragment, bundle);
         });
 
         return view;
-    }
-
-    @Nullable
-    private String mapTriggerIdToName(int id) {
-        if (id == R.id.cardWork) return "Work";
-        if (id == R.id.cardRelationships) return "Relationships";
-        if (id == R.id.cardHealth) return "Health";
-        if (id == R.id.cardFinance) return "Finance";
-        if (id == R.id.cardFamily) return "Family";
-        if (id == R.id.cardAcademic) return "Academic";
-        if (id == R.id.cardSleep) return "Sleep";
-        if (id == R.id.cardSocial) return "Social";
-        if (id == R.id.cardOther) return "Other";
-        return null;
     }
 }
