@@ -116,6 +116,7 @@
                     app:hintEnabled="false">
 
                     <AutoCompleteTextView
+                        android:id="@+id/timeAutoComplete"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"

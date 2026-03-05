@@ -61,9 +61,12 @@
 
             <!-- Breathing Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBreathingRecommendation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp">
@@ -328,9 +331,12 @@
 
             <!-- Meditation Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMeditationRecommendation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp">

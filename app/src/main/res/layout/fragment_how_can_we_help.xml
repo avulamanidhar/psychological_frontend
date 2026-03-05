@@ -99,7 +99,8 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/option_radio_unchecked" />
+                    android:background="@drawable/option_radio_unchecked"
+                    android:padding="4dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -148,7 +149,8 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/option_radio_unchecked" />
+                    android:background="@drawable/option_radio_unchecked"
+                    android:padding="4dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -197,7 +199,8 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/option_radio_unchecked" />
+                    android:background="@drawable/option_radio_unchecked"
+                    android:padding="4dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -224,7 +227,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/iconJournaling"
+                    android:layout_toEndOf="@+id/iconChat"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
@@ -246,7 +249,8 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/option_radio_unchecked" />
+                    android:background="@drawable/option_radio_unchecked"
+                    android:padding="4dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -295,7 +299,8 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/option_radio_unchecked" />
+                    android:background="@drawable/option_radio_unchecked"
+                    android:padding="4dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

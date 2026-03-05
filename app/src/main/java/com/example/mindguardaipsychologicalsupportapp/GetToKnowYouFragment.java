@@ -50,7 +50,7 @@ public class GetToKnowYouFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isAvatarSelected) {
-                    Navigation.findNavController(view).navigate(R.id.action_getToKnowYouFragment_to_whatBringsYouHereFragment);
+                    Navigation.findNavController(view).navigate(R.id.action_getToKnowYouFragment_to_howCanWeHelpFragment);
                 } else {
                     Toast.makeText(getContext(), "Please select an avatar and age range first", Toast.LENGTH_SHORT).show();
                 }

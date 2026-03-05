@@ -39,8 +39,11 @@
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnNotifications"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeColor="#E0E0E0"
@@ -226,9 +229,12 @@
 
             <!-- Daily Wellness Score -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardWellnessScore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
 
@@ -426,18 +432,24 @@
                             android:textColor="@color/title_blue"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:background="@drawable/ic_launcher_background"
-                            android:backgroundTint="@color/tag_green_bg"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="2dp"
-                            android:text="New"
-                            android:textColor="@color/tag_green_text"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            app:cardBackgroundColor="@color/tag_green_bg"
+                            app:cardCornerRadius="8dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
+                                android:text="NEW"
+                                android:textColor="@color/tag_green_text"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </com.google.android.material.card.MaterialCardView>
                     </RelativeLayout>
 
                     <TextView
@@ -578,8 +590,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img_17"
-                    app:tint="@color/button_blue" />
+                    android:src="@drawable/img_69" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -600,7 +611,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img_36" />
+                    android:src="@drawable/img_75" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

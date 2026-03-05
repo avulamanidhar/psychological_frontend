@@ -1,5 +1,6 @@
 package com.example.mindguardaipsychologicalsupportapp;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,13 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReviewEntryFragment extends Fragment {
+
+    private int moodImage;
+    private int intensity;
+    private String moodName;
+    private ArrayList<String> triggers;
 
     @Nullable
     @Override
@@ -27,41 +32,31 @@ public class ReviewEntryFragment extends Fragment {
         TextView txtMoodNameReview = view.findViewById(R.id.txtMoodNameReview);
         LinearProgressIndicator progressIntensity = view.findViewById(R.id.progressIntensityReview);
         TextView txtIntensity = view.findViewById(R.id.txtIntensityReview);
-        ChipGroup chipGroup = view.findViewById(R.id.chipGroupTriggersReview);
-
-        int moodImage = R.drawable.img_28;
-        int intensity = 50;
-        String moodName = "Great";
-        String thoughts = "";
-        ArrayList<String> triggers = new ArrayList<>();
+        ChipGroup chipGroupTriggers = view.findViewById(R.id.chipGroupTriggersReview);
 
         // Get data from bundle
         if (getArguments() != null) {
             moodImage = getArguments().getInt("moodImage", R.drawable.img_28);
             intensity = getArguments().getInt("intensity", 50);
             moodName = getArguments().getString("moodName", "Great");
-            thoughts = getArguments().getString("thoughts", "");
-            ArrayList<String> t = getArguments().getStringArrayList("triggers");
-            if (t != null) triggers = t;
+            triggers = getArguments().getStringArrayList("triggers");
 
             imgMoodReview.setImageResource(moodImage);
             txtMoodNameReview.setText(moodName);
             progressIntensity.setProgress(intensity);
             txtIntensity.setText(intensity + " % intensity");
-        }
 
-        if (chipGroup != null) {
-            chipGroup.removeAllViews();
-            if (triggers.isEmpty()) {
-                chipGroup.setVisibility(View.GONE);
-            } else {
-                chipGroup.setVisibility(View.VISIBLE);
-                for (String tr : triggers) {
-                    Chip c = new Chip(requireContext());
-                    c.setText(tr);
-                    c.setClickable(false);
-                    c.setCheckable(false);
-                    chipGroup.addView(c);
+            // Display dynamic triggers
+            if (chipGroupTriggers != null && triggers != null) {
+                chipGroupTriggers.removeAllViews();
+                for (String trigger : triggers) {
+                    Chip chip = new Chip(requireContext());
+                    chip.setText(trigger);
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(getResources().getColor(R.color.icon_bg_blue)));
+                    chip.setTextColor(getResources().getColor(R.color.button_blue));
+                    chip.setChipCornerRadius(24f);
+                    chip.setChipStrokeWidth(0f);
+                    chipGroupTriggers.addView(chip);
                 }
             }
         }
@@ -70,15 +65,12 @@ public class ReviewEntryFragment extends Fragment {
             Navigation.findNavController(view).navigateUp();
         });
 
-        final int finalMoodImage = moodImage;
-        final int finalIntensity = intensity;
-        final String finalMoodName = moodName;
-        final String finalThoughts = thoughts;
-        final List<String> finalTriggers = triggers;
-
         view.findViewById(R.id.btnSaveEntry).setOnClickListener(v -> {
-            MoodEntry entry = MoodEntry.createNow(finalMoodName, finalMoodImage, finalIntensity, finalTriggers, finalThoughts);
+            // Save the entry before navigating
+            MoodEntry entry = MoodEntry.createNow(moodName, moodImage, intensity, triggers, "");
             MoodEntryStorage.add(requireContext(), entry);
+            
+            // Navigate to Mood History
             Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_moodHistoryFragment);
         });
 

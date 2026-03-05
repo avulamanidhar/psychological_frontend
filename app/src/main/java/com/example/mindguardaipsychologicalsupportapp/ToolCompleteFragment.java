@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,15 @@ public class ToolCompleteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tool_complete, container, false);
+
+        String exerciseName = "exercise";
+        if (getArguments() != null && getArguments().containsKey("exerciseName")) {
+            exerciseName = getArguments().getString("exerciseName", "exercise");
+        }
+        TextView subtitleComplete = view.findViewById(R.id.subtitleComplete);
+        if (subtitleComplete != null) {
+            subtitleComplete.setText("You completed the " + exerciseName + " exercise. How do you feel now?");
+        }
 
         view.findViewById(R.id.btnBackToTools).setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_toolCompleteFragment_to_toolsFragment);
@@ -36,7 +46,7 @@ public class ToolCompleteFragment extends Fragment {
         View btnNavTools = view.findViewById(R.id.btnNavTools);
         if (btnNavTools != null) btnNavTools.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolCompleteFragment_to_toolsFragment));
         View btnNavProfile = view.findViewById(R.id.btnNavProfile);
-        if (btnNavProfile != null) btnNavProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolCompleteFragment_to_profileOverviewFragment));
+        if (btnNavProfile != null) btnNavProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolCompleteFragment_to_settingsFragment));
 
         return view;
     }

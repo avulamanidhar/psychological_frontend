@@ -18,23 +18,22 @@ public class MoodIntensityFragment extends Fragment {
 
     private int moodImageResId = R.drawable.img_28;
     private String moodName = "Great";
-    private int intensityValue = 14;
+    private int intensityValue = 50;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mood_intensity, container, false);
 
-        ImageView imgMoodEmoji = view.findViewById(R.id.imgMoodEmoji);
-        Slider slider = view.findViewById(R.id.sliderIntensity);
-        TextView txtPercent = view.findViewById(R.id.txtIntensityPercent);
-        TextView txtDesc = view.findViewById(R.id.txtIntensityDesc);
+        ImageView imgMoodIntensity = view.findViewById(R.id.imgMoodIntensity);
+        Slider slider = view.findViewById(R.id.intensitySlider);
+        TextView txtPercent = view.findViewById(R.id.txtIntensityValue);
 
         // Get passed mood data
         if (getArguments() != null) {
             moodImageResId = getArguments().getInt("moodImage", R.drawable.img_28);
             moodName = getArguments().getString("moodName", "Great");
-            imgMoodEmoji.setImageResource(moodImageResId);
+            imgMoodIntensity.setImageResource(moodImageResId);
         }
 
         slider.addOnChangeListener((s, value, fromUser) -> {
@@ -42,17 +41,11 @@ public class MoodIntensityFragment extends Fragment {
             txtPercent.setText(intensityValue + "%");
             
             if (intensityValue < 30) {
-                txtDesc.setText("Feeling quite calm and centered");
                 slider.setTrackActiveTintList(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
-                slider.setThumbStrokeColor(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
             } else if (intensityValue < 70) {
-                txtDesc.setText("Manageable");
                 slider.setTrackActiveTintList(ColorStateList.valueOf(Color.parseColor("#4A90E2")));
-                slider.setThumbStrokeColor(ColorStateList.valueOf(Color.parseColor("#4A90E2")));
             } else {
-                txtDesc.setText("Let's work through this together");
                 slider.setTrackActiveTintList(ColorStateList.valueOf(Color.parseColor("#E91E63")));
-                slider.setThumbStrokeColor(ColorStateList.valueOf(Color.parseColor("#E91E63")));
             }
         });
 
@@ -60,7 +53,7 @@ public class MoodIntensityFragment extends Fragment {
             Navigation.findNavController(view).navigateUp();
         });
 
-        view.findViewById(R.id.btnNext).setOnClickListener(v -> {
+        view.findViewById(R.id.btnNextIntensity).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("moodImage", moodImageResId);
             bundle.putString("moodName", moodName);

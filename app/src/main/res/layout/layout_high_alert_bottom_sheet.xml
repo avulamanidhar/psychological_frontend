@@ -80,63 +80,128 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/btnTalkProfessional"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/button_blue"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="4dp">
-        <RelativeLayout
+        android:text="SUGGESTIONS"
+        android:textColor="@color/desc_gray"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- Video Suggestion 1 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnVideo1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
-            <ImageView
-                android:id="@+id/imgDoc"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_menu_myplaces"
-                app:tint="@color/white" />
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_60" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/white" />
+            </com.google.android.material.card.MaterialCardView>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/imgDoc"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Talk to a Professional"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:text="Understanding Anxiety"
+                    android:textColor="@color/title_blue"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Connect with a licensed therapist or counselor"
-                    android:textColor="#CCFFFFFF"
+                    android:text="Psychological support video"
+                    android:textColor="@color/desc_gray"
                     android:textSize="12sp" />
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Video Suggestion 2 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnVideo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_68" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/white" />
+            </com.google.android.material.card.MaterialCardView>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="#33FFFFFF"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="RECOMMENDED"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Coping Mechanisms"
+                    android:textColor="@color/title_blue"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daily mental health tips"
+                    android:textColor="@color/desc_gray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/btnContinueAI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
@@ -182,7 +247,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:padding="12dp"
-        android:text="🕒 Remind Me Later (2 hours)"
+        android:text="🕒 Remind Me Later"
         android:textColor="@color/desc_gray"
         android:textSize="14sp" />
 
