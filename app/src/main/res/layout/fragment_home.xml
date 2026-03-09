@@ -588,6 +588,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/imgNavHome"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/img_69" />
@@ -609,6 +610,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/imgNavMood"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/img_75" />
@@ -630,6 +632,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/imgNavChat"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/img_37" />
@@ -651,6 +654,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/imgNavTools"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/img_38" />
@@ -672,6 +676,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/imgNavProfile"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/img_39" />

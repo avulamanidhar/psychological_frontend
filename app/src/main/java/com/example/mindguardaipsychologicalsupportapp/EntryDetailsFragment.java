@@ -29,13 +29,28 @@ public class EntryDetailsFragment extends Fragment {
         view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
         String entryId = getArguments() == null ? null : getArguments().getString("entryId");
-        MoodEntry entry = entryId == null ? null : MoodEntryStorage.getById(requireContext(), entryId);
-        if (entry == null) {
+        if (entryId == null) {
             Navigation.findNavController(view).navigateUp();
             return view;
         }
 
-        bind(view, entry);
+        MoodEntryStorage.getById(requireContext(), entryId, new MoodEntryStorage.MoodFetchSingleCallback() {
+            @Override
+            public void onSuccess(MoodEntry entry) {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> bind(view, entry));
+            }
+
+            @Override
+            public void onError(String message) {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> {
+                    android.widget.Toast.makeText(requireContext(), "Error loading entry: " + message, android.widget.Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(view).navigateUp();
+                });
+            }
+        });
+
         return view;
     }
 

@@ -41,10 +41,10 @@ public class ReviewEntryFragment extends Fragment {
             moodName = getArguments().getString("moodName", "Great");
             triggers = getArguments().getStringArrayList("triggers");
 
-            imgMoodReview.setImageResource(moodImage);
-            txtMoodNameReview.setText(moodName);
-            progressIntensity.setProgress(intensity);
-            txtIntensity.setText(intensity + " % intensity");
+            if (imgMoodReview != null) imgMoodReview.setImageResource(moodImage);
+            if (txtMoodNameReview != null) txtMoodNameReview.setText(moodName);
+            if (progressIntensity != null) progressIntensity.setProgress(intensity);
+            if (txtIntensity != null) txtIntensity.setText(intensity + " % intensity");
 
             // Display dynamic triggers
             if (chipGroupTriggers != null && triggers != null) {
@@ -66,13 +66,64 @@ public class ReviewEntryFragment extends Fragment {
         });
 
         view.findViewById(R.id.btnSaveEntry).setOnClickListener(v -> {
+            // Disable button while saving to prevent double clicks
+            v.setEnabled(false);
+
             // Save the entry before navigating
             MoodEntry entry = MoodEntry.createNow(moodName, moodImage, intensity, triggers, "");
-            MoodEntryStorage.add(requireContext(), entry);
             
-            // Navigate to Mood History
-            Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_moodHistoryFragment);
+            MoodEntryStorage.add(requireContext(), entry, new MoodEntryStorage.MoodAddCallback() {
+                @Override
+                public void onSuccess(MoodEntry savedEntry) {
+                    if (getActivity() == null) return;
+                    getActivity().runOnUiThread(() -> {
+                        // Corrected: Navigate to Mood History on success using the action ID from nav_graph
+                        Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_moodHistoryFragment);
+                    });
+                }
+
+                @Override
+                public void onError(String message) {
+                    if (getActivity() == null) return;
+                    getActivity().runOnUiThread(() -> {
+                        v.setEnabled(true);
+                        android.widget.Toast.makeText(requireContext(), "Failed to save: " + message, android.widget.Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
         });
+
+        // Bottom Navigation Listeners
+        View btnNavHome = view.findViewById(R.id.btnNavHome);
+        if (btnNavHome != null) {
+            btnNavHome.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.homeFragment));
+        }
+
+        View btnNavMood = view.findViewById(R.id.btnNavMood);
+        if (btnNavMood != null) {
+            btnNavMood.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.moodSelectionFragment));
+        }
+
+        View btnNavChat = view.findViewById(R.id.btnNavChat);
+        if (btnNavChat != null) {
+            btnNavChat.setOnClickListener(v -> {
+                Navigation.findNavController(view).navigate(R.id.chatFragment);
+            });
+        }
+
+        View btnNavTools = view.findViewById(R.id.btnNavTools);
+        if (btnNavTools != null) {
+            btnNavTools.setOnClickListener(v -> {
+                Navigation.findNavController(view).navigate(R.id.toolsFragment);
+            });
+        }
+
+        View btnNavProfile = view.findViewById(R.id.btnNavProfile);
+        if (btnNavProfile != null) {
+            btnNavProfile.setOnClickListener(v -> {
+                Navigation.findNavController(view).navigate(R.id.settingsFragment);
+            });
+        }
 
         return view;
     }

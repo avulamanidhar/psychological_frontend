@@ -14,44 +14,87 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
+import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+
 public final class MoodEntryStorage {
     private static final String PREFS = "mindguard_mood_entries";
     private static final String KEY_ENTRIES = "entries_json";
 
     private MoodEntryStorage() {}
 
-    @NonNull
-    public static List<MoodEntry> getAll(@NonNull Context context) {
-        SharedPreferences sp = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        String raw = sp.getString(KEY_ENTRIES, "[]");
+    public interface MoodFetchCallback {
+        void onSuccess(List<MoodEntry> entries);
+        void onError(String message);
+    }
 
-        List<MoodEntry> out = new ArrayList<>();
-        try {
-            JSONArray arr = new JSONArray(raw == null ? "[]" : raw);
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject o = arr.optJSONObject(i);
-                if (o == null) continue;
-                out.add(MoodEntry.fromJson(o));
+    public static void getAll(@NonNull Context context, MoodFetchCallback callback) {
+        MindGuardApiService api = RetrofitClient.getApiService();
+        api.getMoodEntries().enqueue(new retrofit2.Callback<List<MoodEntry>>() {
+            @Override
+            public void onResponse(retrofit2.Call<List<MoodEntry>> call, retrofit2.Response<List<MoodEntry>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<MoodEntry> out = response.body();
+                    Collections.sort(out, (a, b) -> Long.compare(b.timestampMillis, a.timestampMillis));
+                    callback.onSuccess(out);
+                } else {
+                    callback.onError("Failed to load entries: " + response.code());
+                }
             }
-        } catch (JSONException ignored) {
-        }
 
-        Collections.sort(out, (a, b) -> Long.compare(b.timestampMillis, a.timestampMillis));
-        return out;
+            @Override
+            public void onFailure(retrofit2.Call<List<MoodEntry>> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
     }
 
-    public static void add(@NonNull Context context, @NonNull MoodEntry entry) {
-        List<MoodEntry> existing = getAll(context);
-        existing.add(0, entry);
-        saveAll(context, existing);
+    public interface MoodAddCallback {
+        void onSuccess(MoodEntry entry);
+        void onError(String message);
     }
 
-    @Nullable
-    public static MoodEntry getById(@NonNull Context context, @NonNull String id) {
-        for (MoodEntry e : getAll(context)) {
-            if (e.id.equals(id)) return e;
-        }
-        return null;
+    public static void add(@NonNull Context context, @NonNull MoodEntry entry, MoodAddCallback callback) {
+        MindGuardApiService api = RetrofitClient.getApiService();
+        api.createMoodEntry(entry).enqueue(new retrofit2.Callback<MoodEntry>() {
+            @Override
+            public void onResponse(retrofit2.Call<MoodEntry> call, retrofit2.Response<MoodEntry> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Failed to add entry: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<MoodEntry> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    public interface MoodFetchSingleCallback {
+        void onSuccess(MoodEntry entry);
+        void onError(String message);
+    }
+
+    public static void getById(@NonNull Context context, @NonNull String id, MoodFetchSingleCallback callback) {
+        MindGuardApiService api = RetrofitClient.getApiService();
+        api.getMoodEntry(id).enqueue(new retrofit2.Callback<MoodEntry>() {
+            @Override
+            public void onResponse(retrofit2.Call<MoodEntry> call, retrofit2.Response<MoodEntry> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Failed to fetch entry: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<MoodEntry> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
     }
 
     private static void saveAll(@NonNull Context context, @NonNull List<MoodEntry> entries) {

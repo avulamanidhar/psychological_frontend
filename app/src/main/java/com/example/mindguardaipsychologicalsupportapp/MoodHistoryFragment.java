@@ -29,35 +29,88 @@ public class MoodHistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mood_history, container, false);
 
         view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
-        view.findViewById(R.id.btnLogNew).setOnClickListener(v ->
+        
+        View btnLogNew = view.findViewById(R.id.btnLogNew);
+        if (btnLogNew != null) {
+            btnLogNew.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.moodSelectionFragment));
+        }
 
         LinearLayout listContainer = view.findViewById(R.id.listContainer);
-        List<MoodEntry> entries = MoodEntryStorage.getAll(requireContext());
 
-        listContainer.removeAllViews();
-        if (entries.isEmpty()) {
-            TextView empty = new TextView(requireContext());
-            empty.setText("No entries yet. Tap + Log New to add your first mood.");
-            empty.setTextColor(getResources().getColor(R.color.desc_gray));
-            empty.setTextSize(14f);
-            empty.setPadding(8, 24, 8, 0);
-            listContainer.addView(empty);
-            return view;
-        }
+        MoodEntryStorage.getAll(requireContext(), new MoodEntryStorage.MoodFetchCallback() {
+            @Override
+            public void onSuccess(List<MoodEntry> entries) {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> {
+                    listContainer.removeAllViews();
+                    if (entries.isEmpty()) {
+                        TextView empty = new TextView(requireContext());
+                        empty.setText("No entries yet. Tap + Log New to add your first mood.");
+                        empty.setTextColor(getResources().getColor(R.color.desc_gray));
+                        empty.setTextSize(14f);
+                        empty.setPadding(8, 24, 8, 0);
+                        listContainer.addView(empty);
+                        return;
+                    }
 
-        for (MoodEntry e : entries) {
-            View row = inflater.inflate(R.layout.item_mood_history, listContainer, false);
-            bindRow(row, e);
-            row.setOnClickListener(v -> {
-                Bundle b = new Bundle();
-                b.putString("entryId", e.id);
-                Navigation.findNavController(view).navigate(R.id.action_moodHistoryFragment_to_entryDetailsFragment, b);
-            });
-            listContainer.addView(row);
-        }
+                    for (MoodEntry e : entries) {
+                        View row = inflater.inflate(R.layout.item_mood_history, listContainer, false);
+                        bindRow(row, e);
+                        row.setOnClickListener(v -> {
+                            Bundle b = new Bundle();
+                            b.putString("entryId", e.id);
+                            Navigation.findNavController(view).navigate(R.id.action_moodHistoryFragment_to_entryDetailsFragment, b);
+                        });
+                        listContainer.addView(row);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> {
+                    listContainer.removeAllViews();
+                    TextView error = new TextView(requireContext());
+                    error.setText("Error loading entries: " + message);
+                    error.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                    listContainer.addView(error);
+                });
+            }
+        });
+
+        // Bottom Navigation Listeners
+        setupBottomNavigation(view);
 
         return view;
+    }
+
+    private void setupBottomNavigation(View view) {
+        View btnNavHome = view.findViewById(R.id.btnNavHome);
+        if (btnNavHome != null) {
+            btnNavHome.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.homeFragment));
+        }
+
+        View btnNavMood = view.findViewById(R.id.btnNavMood);
+        if (btnNavMood != null) {
+            btnNavMood.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.moodSelectionFragment));
+        }
+
+        View btnNavChat = view.findViewById(R.id.btnNavChat);
+        if (btnNavChat != null) {
+            btnNavChat.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.chatFragment));
+        }
+
+        View btnNavTools = view.findViewById(R.id.btnNavTools);
+        if (btnNavTools != null) {
+            btnNavTools.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.toolsFragment));
+        }
+
+        View btnNavProfile = view.findViewById(R.id.btnNavProfile);
+        if (btnNavProfile != null) {
+            btnNavProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.settingsFragment));
+        }
     }
 
     private void bindRow(@NonNull View row, @NonNull MoodEntry e) {
@@ -90,4 +143,3 @@ public class MoodHistoryFragment extends Fragment {
         chips.setVisibility(e.triggers.isEmpty() ? View.GONE : View.VISIBLE);
     }
 }
-
