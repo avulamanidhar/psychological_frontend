@@ -65,6 +65,36 @@
         <action
             android:id="@+id/action_createAccountFragment_to_getToKnowYouFragment"
             app:destination="@id/getToKnowYouFragment" />
+        <action
+            android:id="@+id/action_createAccountFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.mindguardaipsychologicalsupportapp.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/initialLogoFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.mindguardaipsychologicalsupportapp.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -307,7 +337,7 @@
     <fragment
         android:id="@+id/reviewEntryFragment"
         android:name="com.example.mindguardaipsychologicalsupportapp.ReviewEntryFragment"
-        android:label="ReviewEntryFragment"
+        android:label="Review Entry"
         tools:layout="@layout/fragment_review_entry">
         <action
             android:id="@+id/action_reviewEntryFragment_to_homeFragment"
@@ -324,7 +354,7 @@
     <fragment
         android:id="@+id/moodHistoryFragment"
         android:name="com.example.mindguardaipsychologicalsupportapp.MoodHistoryFragment"
-        android:label="MoodHistoryFragment"
+        android:label="Mood History"
         tools:layout="@layout/fragment_mood_history">
         <action
             android:id="@+id/action_moodHistoryFragment_to_entryDetailsFragment"

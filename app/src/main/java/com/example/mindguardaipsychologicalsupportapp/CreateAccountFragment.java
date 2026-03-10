@@ -26,32 +26,46 @@ public class CreateAccountFragment extends Fragment {
 
         etFullName = view.findViewById(R.id.etFullName);
         Button createAccountButton = view.findViewById(R.id.createAccountButton);
+        TextView loginText = view.findViewById(R.id.loginText);
         
-        createAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = etFullName.getText().toString().trim();
-                if (name.isEmpty()) {
-                    Toast.makeText(getContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
-                    return;
+        if (createAccountButton != null) {
+            createAccountButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String name = etFullName.getText().toString().trim();
+                    if (name.isEmpty()) {
+                        Toast.makeText(getContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Save user name in SharedPreferences
+                    SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                    prefs.edit().putString("user_name", name).apply();
+
+                    // Navigation to Get To Know You screen
+                    try {
+                        Navigation.findNavController(view).navigate(R.id.action_createAccountFragment_to_getToKnowYouFragment);
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Navigation failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+            });
+        }
 
-                // Save user name in SharedPreferences
-                SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-                prefs.edit().putString("user_name", name).apply();
-
-                // Navigate to GetToKnowYou screen
-                Navigation.findNavController(view).navigate(R.id.action_createAccountFragment_to_getToKnowYouFragment);
-            }
-        });
+        if (loginText != null) {
+            loginText.setOnClickListener(v -> {
+                try {
+                    Navigation.findNavController(view).navigate(R.id.action_createAccountFragment_to_loginFragment);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Navigation to login failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         TextView backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigateUp();
-            }
-        });
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        }
 
         return view;
     }

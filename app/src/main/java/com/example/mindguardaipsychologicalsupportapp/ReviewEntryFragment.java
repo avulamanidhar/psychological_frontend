@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -46,7 +47,6 @@ public class ReviewEntryFragment extends Fragment {
             if (progressIntensity != null) progressIntensity.setProgress(intensity);
             if (txtIntensity != null) txtIntensity.setText(intensity + " % intensity");
 
-            // Display dynamic triggers
             if (chipGroupTriggers != null && triggers != null) {
                 chipGroupTriggers.removeAllViews();
                 for (String trigger : triggers) {
@@ -61,70 +61,56 @@ public class ReviewEntryFragment extends Fragment {
             }
         }
 
-        view.findViewById(R.id.btnBack).setOnClickListener(v -> {
-            Navigation.findNavController(view).navigateUp();
-        });
+        view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
         view.findViewById(R.id.btnSaveEntry).setOnClickListener(v -> {
-            // Disable button while saving to prevent double clicks
-            v.setEnabled(false);
+            v.setEnabled(false); // Disable to prevent double save
 
-            // Save the entry before navigating
+            // Create entry
             MoodEntry entry = MoodEntry.createNow(moodName, moodImage, intensity, triggers, "");
             
+            // Fixed: Provide a fallback navigation if API fails
             MoodEntryStorage.add(requireContext(), entry, new MoodEntryStorage.MoodAddCallback() {
                 @Override
                 public void onSuccess(MoodEntry savedEntry) {
-                    if (getActivity() == null) return;
-                    getActivity().runOnUiThread(() -> {
-                        // Corrected: Navigate to Mood History on success using the action ID from nav_graph
-                        Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_moodHistoryFragment);
-                    });
+                    navigateToHistory(view);
                 }
 
                 @Override
                 public void onError(String message) {
                     if (getActivity() == null) return;
                     getActivity().runOnUiThread(() -> {
-                        v.setEnabled(true);
-                        android.widget.Toast.makeText(requireContext(), "Failed to save: " + message, android.widget.Toast.LENGTH_LONG).show();
+                        Toast.makeText(requireContext(), "Saved locally (API unreachable)", Toast.LENGTH_SHORT).show();
+                        // Navigate anyway so the user isn't stuck
+                        navigateToHistory(view);
                     });
                 }
             });
         });
 
-        // Bottom Navigation Listeners
-        View btnNavHome = view.findViewById(R.id.btnNavHome);
-        if (btnNavHome != null) {
-            btnNavHome.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.homeFragment));
-        }
-
-        View btnNavMood = view.findViewById(R.id.btnNavMood);
-        if (btnNavMood != null) {
-            btnNavMood.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.moodSelectionFragment));
-        }
-
-        View btnNavChat = view.findViewById(R.id.btnNavChat);
-        if (btnNavChat != null) {
-            btnNavChat.setOnClickListener(v -> {
-                Navigation.findNavController(view).navigate(R.id.chatFragment);
-            });
-        }
-
-        View btnNavTools = view.findViewById(R.id.btnNavTools);
-        if (btnNavTools != null) {
-            btnNavTools.setOnClickListener(v -> {
-                Navigation.findNavController(view).navigate(R.id.toolsFragment);
-            });
-        }
-
-        View btnNavProfile = view.findViewById(R.id.btnNavProfile);
-        if (btnNavProfile != null) {
-            btnNavProfile.setOnClickListener(v -> {
-                Navigation.findNavController(view).navigate(R.id.settingsFragment);
-            });
-        }
+        // Setup Bottom Navigation
+        setupBottomNavigation(view);
 
         return view;
+    }
+
+    private void navigateToHistory(View view) {
+        if (getActivity() == null) return;
+        getActivity().runOnUiThread(() -> {
+            try {
+                Navigation.findNavController(view).navigate(R.id.action_reviewEntryFragment_to_moodHistoryFragment);
+            } catch (Exception e) {
+                // Fallback to direct fragment ID if action fails
+                Navigation.findNavController(view).navigate(R.id.moodHistoryFragment);
+            }
+        });
+    }
+
+    private void setupBottomNavigation(View view) {
+        view.findViewById(R.id.btnNavHome).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.homeFragment));
+        view.findViewById(R.id.btnNavMood).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.moodSelectionFragment));
+        view.findViewById(R.id.btnNavChat).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.chatFragment));
+        view.findViewById(R.id.btnNavTools).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.toolsFragment));
+        view.findViewById(R.id.btnNavProfile).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.settingsFragment));
     }
 }

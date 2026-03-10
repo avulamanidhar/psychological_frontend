@@ -1,6 +1,8 @@
 package com.example.mindguardaipsychologicalsupportapp;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +10,21 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
+import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MentalHealthScoreFragment extends Fragment {
 
@@ -42,41 +55,70 @@ public class MentalHealthScoreFragment extends Fragment {
 
         view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
 
-        animateScores();
+        loadScores();
 
         return view;
     }
 
-    private void animateScores() {
-        // Main Score Animation: 0 to 78
-        animateValue(0, 78, 1500, (value) -> {
+    private void loadScores() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "User");
+
+        MindGuardApiService api = RetrofitClient.getApiService();
+        api.getHealthScoreDetail(userName).enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, Object> data = response.body();
+                    
+                    int main = ((Double) data.get("main_score")).intValue();
+                    int mood = ((Double) data.get("mood_score")).intValue();
+                    int stress = ((Double) data.get("stress_score")).intValue();
+                    int sleep = ((Double) data.get("sleep_score")).intValue();
+                    int social = ((Double) data.get("social_score")).intValue();
+                    
+                    animateScores(main, mood, stress, sleep, social);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed to load scores", Toast.LENGTH_SHORT).show();
+                animateScores(78, 82, 65, 71, 88); // fallback to defaults
+            }
+        });
+    }
+
+    private void animateScores(int main, int mood, int stress, int sleep, int social) {
+        // Main Score Animation
+        animateValue(0, main, 1500, (value) -> {
             txtMainScore.setText(String.valueOf(value));
             circularProgressBar.setProgress(value);
-            if (value == 78) {
+            if (value == main) {
                 txtScoreLabel.setVisibility(View.VISIBLE);
             }
         });
 
-        // Mood Score Animation: 0 to 82
-        animateValue(0, 82, 1200, (value) -> {
+        // Mood Score Animation
+        animateValue(0, mood, 1200, (value) -> {
             txtMoodScore.setText(value + " /100");
             progressMood.setProgress(value);
         });
 
-        // Stress Score Animation: 0 to 65
-        animateValue(0, 65, 1000, (value) -> {
+        // Stress Score Animation
+        animateValue(0, stress, 1000, (value) -> {
             txtStressScore.setText(value + " /100");
             progressStress.setProgress(value);
         });
 
-        // Sleep Score Animation: 0 to 71
-        animateValue(0, 71, 1100, (value) -> {
+        // Sleep Score Animation
+        animateValue(0, sleep, 1100, (value) -> {
             txtSleepScore.setText(value + " /100");
             progressSleep.setProgress(value);
         });
 
-        // Social Score Animation: 0 to 88
-        animateValue(0, 88, 1300, (value) -> {
+        // Social Score Animation
+        animateValue(0, social, 1300, (value) -> {
             txtSocialScore.setText(value + " /100");
             progressSocial.setProgress(value);
         });

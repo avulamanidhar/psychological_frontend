@@ -1,23 +1,46 @@
 package com.example.mindguardaipsychologicalsupportapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class HomeFragment extends Fragment {
+
+    private TextView txtGreeting, txtMentalHealthScore, txtLatestMoodName, txtRecommendation;
+    private String userName;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        txtGreeting = view.findViewById(R.id.txtGreeting);
+        txtMentalHealthScore = view.findViewById(R.id.txtMentalHealthScore);
+        txtLatestMoodName = view.findViewById(R.id.txtLatestMoodName);
+        txtRecommendation = view.findViewById(R.id.txtRecommendation);
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        userName = prefs.getString("user_name", "User");
+
+         // Set personalized greeting
+        if (txtGreeting != null) {
+            txtGreeting.setText("Good morning, " + userName + " 👋");
+        }
 
         // Navigation to Notifications
         View btnNotifications = view.findViewById(R.id.btnNotifications);
@@ -27,7 +50,7 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        // Navigation to Mental Health Score (Daily Wellness Score)
+        // Navigation to Mental Health Score
         View wellnessScoreCard = view.findViewById(R.id.cardWellnessScore);
         if (wellnessScoreCard != null) {
             wellnessScoreCard.setOnClickListener(v -> {
@@ -97,29 +120,15 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        // Demo Alerts - Mild
+        // Demo Alerts
         View btnAlertMild = view.findViewById(R.id.btnAlertMild);
-        if (btnAlertMild != null) {
-            btnAlertMild.setOnClickListener(v -> {
-                showMildAlertBottomSheet();
-            });
-        }
+        if (btnAlertMild != null) btnAlertMild.setOnClickListener(v -> showMildAlertBottomSheet());
 
-        // Demo Alerts - Moderate
         View btnAlertModerate = view.findViewById(R.id.btnAlertModerate);
-        if (btnAlertModerate != null) {
-            btnAlertModerate.setOnClickListener(v -> {
-                showModerateAlertBottomSheet();
-            });
-        }
+        if (btnAlertModerate != null) btnAlertModerate.setOnClickListener(v -> showModerateAlertBottomSheet());
 
-        // Demo Alerts - High
         View btnAlertHigh = view.findViewById(R.id.btnAlertHigh);
-        if (btnAlertHigh != null) {
-            btnAlertHigh.setOnClickListener(v -> {
-                showHighAlertBottomSheet();
-            });
-        }
+        if (btnAlertHigh != null) btnAlertHigh.setOnClickListener(v -> showHighAlertBottomSheet());
 
         return view;
     }
@@ -134,7 +143,6 @@ public class HomeFragment extends Fragment {
         
         bottomSheetView.findViewById(R.id.btnTryBreathing).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
-            // Direct navigation to Breathing Tool
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_toolBreathingFragment);
         });
 
@@ -169,13 +177,12 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatFragment);
         });
 
-        // Updated Suggestions with Video Links
         bottomSheetView.findViewById(R.id.btnVideo1).setOnClickListener(v -> {
-            openVideo("https://www.youtube.com/watch?v=WWloIAQpMcQ"); // Understanding Anxiety
+            openVideo("https://www.youtube.com/watch?v=WWloIAQpMcQ");
         });
 
         bottomSheetView.findViewById(R.id.btnVideo2).setOnClickListener(v -> {
-            openVideo("https://www.youtube.com/watch?v=86m4RLpqw_c"); // Coping Mechanisms
+            openVideo("https://www.youtube.com/watch?v=86m4RLpqw_c");
         });
 
         bottomSheetView.findViewById(R.id.btnEmergency).setOnClickListener(v -> {

@@ -75,28 +75,62 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <!-- Stars -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <!-- Rating Bar -->
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:numStars="5"
+                        android:rating="5"
+                        android:stepSize="1"
+                        android:progressTint="@color/button_blue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/btn_star_big_off" android:layout_marginHorizontal="4dp" />
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/btn_star_big_off" android:layout_marginHorizontal="4dp" />
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/btn_star_big_off" android:layout_marginHorizontal="4dp" />
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/btn_star_big_off" android:layout_marginHorizontal="4dp" />
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/btn_star_big_off" android:layout_marginHorizontal="4dp" />
-                    </LinearLayout>
+                        android:text="Subject"
+                        android:textColor="@color/title_blue"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="8dp"
+                        app:cardBackgroundColor="#F8FAFC"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <EditText
+                            android:id="@+id/editSubject"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="e.g., Feature Request"
+                            android:padding="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/title_blue"
+                            android:textSize="14sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Message"
+                        android:textColor="@color/title_blue"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         app:cardBackgroundColor="#F8FAFC"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp">
                         <EditText
+                            android:id="@+id/editMessage"
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
                             android:background="@null"
