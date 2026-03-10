@@ -54,13 +54,42 @@ public class LanguageAccessibilityFragment extends Fragment {
 
         Button nextButton = view.findViewById(R.id.nextButtonLangAcc);
         nextButton.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_languageAccessibilityFragment_to_stayConnectedFragment);
+            saveSettingsToBackend(view);
         });
 
         TextView backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
         return view;
+    }
+
+    private void saveSettingsToBackend(View view) {
+        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "User");
+        String selectedLang = languageAutoComplete.getText().toString();
+        
+        // Determine text size based on button state (simple version)
+        String textSize = "Medium";
+        if (btnSmall.getTextColors().getDefaultColor() == ContextCompat.getColor(requireContext(), R.color.white)) textSize = "Small";
+        if (btnLarge.getTextColors().getDefaultColor() == ContextCompat.getColor(requireContext(), R.color.white)) textSize = "Large";
+
+        java.util.Map<String, Object> profileUpdates = new java.util.HashMap<>();
+        profileUpdates.put("language", selectedLang);
+        profileUpdates.put("text_size", textSize);
+
+        com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
+            .updateUserProfile(userName, profileUpdates)
+            .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+                @Override
+                public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                    Navigation.findNavController(view).navigate(R.id.action_languageAccessibilityFragment_to_stayConnectedFragment);
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
+                    Navigation.findNavController(view).navigate(R.id.action_languageAccessibilityFragment_to_stayConnectedFragment);
+                }
+            });
     }
 
     private void updateTextSizeUI(Button selectedButton) {

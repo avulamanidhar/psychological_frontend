@@ -38,16 +38,38 @@ public class CreateAccountFragment extends Fragment {
                         return;
                     }
 
-                    // Save user name in SharedPreferences
-                    SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-                    prefs.edit().putString("user_name", name).apply();
+                    // Create user map for API
+                    java.util.HashMap<String, String> userMap = new java.util.HashMap<>();
+                    userMap.put("username", name);
+                    userMap.put("password", "password123"); // Default password for demo
+                    userMap.put("email", name.toLowerCase().replace(" ", ".") + "@example.com");
 
-                    // Navigation to Get To Know You screen
-                    try {
-                        Navigation.findNavController(view).navigate(R.id.action_createAccountFragment_to_getToKnowYouFragment);
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), "Navigation failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                    com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
+                        .registerUser(userMap)
+                        .enqueue(new retrofit2.Callback<okhttp3.ResponseBody>() {
+                            @Override
+                            public void onResponse(retrofit2.Call<okhttp3.ResponseBody> call, retrofit2.Response<okhttp3.ResponseBody> response) {
+                                if (response.isSuccessful()) {
+                                    // Save user name in SharedPreferences
+                                    SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                                    prefs.edit().putString("user_name", name).apply();
+
+                                    // Navigation to Get To Know You screen
+                                    try {
+                                        Navigation.findNavController(view).navigate(R.id.action_createAccountFragment_to_getToKnowYouFragment);
+                                    } catch (Exception e) {
+                                        Toast.makeText(getContext(), "Navigation failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), "Registration failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(retrofit2.Call<okhttp3.ResponseBody> call, Throwable t) {
+                                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 }
             });
         }

@@ -46,16 +46,17 @@ public class GetToKnowYouFragment extends Fragment {
         }
 
         Button nextButton = view.findViewById(R.id.nextButtonKnowYou);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAvatarSelected) {
-                    Navigation.findNavController(view).navigate(R.id.action_getToKnowYouFragment_to_howCanWeHelpFragment);
-                } else {
-                    Toast.makeText(getContext(), "Please select an avatar and age range first", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onClick(View v) {
+                    if (isAvatarSelected && selectedAvatarCard != null) {
+                        String avatarName = "avatar_" + avatarGrid.indexOfChild(selectedAvatarCard);
+                        saveAvatarToBackend(avatarName, view);
+                    } else {
+                        Toast.makeText(getContext(), "Please select an avatar and age range first", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         TextView backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -66,5 +67,34 @@ public class GetToKnowYouFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void saveAvatarToBackend(String avatarName, View view) {
+        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "User");
+
+        java.util.Map<String, Object> profileUpdates = new java.util.HashMap<>();
+        profileUpdates.put("avatar_name", avatarName);
+
+        com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
+            .updateUserProfile(userName, profileUpdates)
+            .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+                @Override
+                public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                    if (response.isSuccessful()) {
+                        Navigation.findNavController(view).navigate(R.id.action_getToKnowYouFragment_to_howCanWeHelpFragment);
+                    } else {
+                        Toast.makeText(getContext(), "Failed to save avatar", Toast.LENGTH_SHORT).show();
+                        // Navigate anyway for demo purposes if backend fails
+                        Navigation.findNavController(view).navigate(R.id.action_getToKnowYouFragment_to_howCanWeHelpFragment);
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
+                    Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(view).navigate(R.id.action_getToKnowYouFragment_to_howCanWeHelpFragment);
+                }
+            });
     }
 }

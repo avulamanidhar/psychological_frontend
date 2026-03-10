@@ -18,7 +18,13 @@ public interface MindGuardApiService {
 
     // Onboarding & Identity
     @POST("api/users/")
-    Call<ResponseBody> registerUser(@Body Map<String, String> user);
+    Call<okhttp3.ResponseBody> registerUser(@Body Map<String, String> user);
+
+    @POST("api/login/")
+    Call<Map<String, Object>> login(@Body Map<String, String> credentials);
+
+    @POST("api/forgot-password/")
+    Call<Map<String, Object>> forgotPassword(@Body Map<String, String> data);
 
     @GET("api/profile/{username}/")
     Call<Map<String, Object>> getUserProfile(@Path("username") String username);

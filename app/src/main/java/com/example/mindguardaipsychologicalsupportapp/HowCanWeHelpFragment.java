@@ -52,13 +52,44 @@ public class HowCanWeHelpFragment extends Fragment {
         }
 
         nextButton.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_howCanWeHelpFragment_to_languageAccessibilityFragment);
+            saveGoalsToBackend(view);
         });
 
         TextView backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
         return view;
+    }
+
+    private void saveGoalsToBackend(View view) {
+        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "User");
+
+        java.util.List<String> goals = new java.util.ArrayList<>();
+        for (Integer id : selectedSupportIds) {
+            if (id == R.id.cardChatSupport) goals.add("AI Support");
+            if (id == R.id.cardBreathing) goals.add("Breathing");
+            if (id == R.id.cardMeditation) goals.add("Meditation");
+            if (id == R.id.cardJournaling) goals.add("Journaling");
+            if (id == R.id.cardAlerts) goals.add("Smart Alerts");
+        }
+
+        java.util.Map<String, Object> profileUpdates = new java.util.HashMap<>();
+        profileUpdates.put("goals", goals);
+
+        com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
+            .updateUserProfile(userName, profileUpdates)
+            .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+                @Override
+                public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                    Navigation.findNavController(view).navigate(R.id.action_howCanWeHelpFragment_to_languageAccessibilityFragment);
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
+                    Navigation.findNavController(view).navigate(R.id.action_howCanWeHelpFragment_to_languageAccessibilityFragment);
+                }
+            });
     }
 
     private void toggleSupportSelection(CardView card, ImageView selectIcon, int id) {
