@@ -32,15 +32,17 @@ public class ToolCompleteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tool_complete, container, false);
 
         String exerciseName = "exercise";
-        if (getArguments() != null && getArguments().containsKey("exerciseName")) {
-            exerciseName = getArguments().getString("exerciseName", "exercise");
+        int duration = 10;
+        if (getArguments() != null) {
+            if (getArguments().containsKey("exerciseName")) exerciseName = getArguments().getString("exerciseName", "exercise");
+            if (getArguments().containsKey("duration")) duration = getArguments().getInt("duration", 10);
         }
         TextView subtitleComplete = view.findViewById(R.id.subtitleComplete);
         if (subtitleComplete != null) {
             subtitleComplete.setText("You completed the " + exerciseName + " exercise. How do you feel now?");
         }
 
-        logActivityToBackend(exerciseName);
+        logActivityToBackend(exerciseName, duration);
 
         view.findViewById(R.id.btnBackToTools).setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_toolCompleteFragment_to_toolsFragment);
@@ -67,7 +69,7 @@ public class ToolCompleteFragment extends Fragment {
         return view;
     }
 
-    private void logActivityToBackend(String exerciseName) {
+    private void logActivityToBackend(String exerciseName, int duration) {
         SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String userName = prefs.getString("user_name", "User");
 
@@ -84,7 +86,7 @@ public class ToolCompleteFragment extends Fragment {
                         Map<String, Object> payload = new HashMap<>();
                         payload.put("user", userId);
                         payload.put("activity_type", exerciseName);
-                        payload.put("duration_minutes", 10);
+                        payload.put("duration_minutes", duration);
 
                         api.logActivity(payload).enqueue(new Callback<Map<String, Object>>() {
                             @Override

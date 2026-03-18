@@ -84,6 +84,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <TextView
+                                android:id="@+id/txtPatternTitle1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Monday Anxiety"
@@ -91,6 +92,7 @@
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtPatternConfidence1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -101,6 +103,7 @@
                         </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/txtPatternDesc1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -149,6 +152,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <TextView
+                                android:id="@+id/txtPatternTitle2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Post-Exercise Boost"
@@ -156,6 +160,7 @@
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtPatternConfidence2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -166,6 +171,7 @@
                         </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/txtPatternDesc2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -214,6 +220,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <TextView
+                                android:id="@+id/txtPatternTitle3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Late Night Stress"
@@ -221,6 +228,7 @@
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtPatternConfidence3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -231,6 +239,7 @@
                         </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/txtPatternDesc3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"

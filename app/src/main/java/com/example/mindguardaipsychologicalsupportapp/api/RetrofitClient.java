@@ -9,7 +9,7 @@ public class RetrofitClient {
 
     // IMPORTANT: Make sure this points to your computer's IP address if testing on a real device.
     // Use 10.0.2.2 for Android Emulator.
-    private static final String BASE_URL = "http://10.0.2.2:8000/";
+    private static final String BASE_URL = "http://10.171.190.185:8000/";
 
     private static Retrofit retrofit = null;
 

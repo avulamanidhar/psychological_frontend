@@ -58,6 +58,14 @@ public class MeditationSessionFragment extends Fragment {
             }
         });
 
+        if (getArguments() != null) {
+            if (getArguments().containsKey("mode")) currentMode = getArguments().getString("mode", "Calm");
+            if (getArguments().containsKey("duration")) {
+                initialTimeInMillis = getArguments().getInt("duration", 5) * 60000L;
+                timeLeftInMillis = initialTimeInMillis;
+            }
+        }
+
         view.findViewById(R.id.btnReset).setOnClickListener(v -> resetTimer());
 
         // Tab click listeners
@@ -153,15 +161,52 @@ public class MeditationSessionFragment extends Fragment {
             public void onFinish() {
                 isTimerRunning = false;
                 btnPlay.setImageResource(android.R.drawable.ic_media_play);
+                
+                logMeditationToBackend();
+
                 Bundle b = new Bundle();
                 b.putString("exerciseName", currentMode + " Meditation");
-                Navigation.findNavController(requireView()).navigate(R.id.action_meditationSessionFragment_to_toolCompleteFragment, b);
+                if (isAdded()) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_meditationSessionFragment_to_toolCompleteFragment, b);
+                }
             }
         }.start();
 
         isTimerRunning = true;
         txtStatus.setText(currentMode + " session in progress...");
         btnPlay.setImageResource(android.R.drawable.ic_media_pause);
+    }
+
+    private void logMeditationToBackend() {
+        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "User");
+        
+        int durationMinutes = (int) (initialTimeInMillis / 60000);
+        
+        java.util.Map<String, Object> activity = new java.util.HashMap<>();
+        activity.put("activity_type", "Meditation");
+        activity.put("duration_minutes", durationMinutes);
+        
+        java.util.Map<String, String> details = new java.util.HashMap<>();
+        details.put("mode", currentMode);
+        activity.put("details", details);
+
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = 
+            com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+            
+        api.logActivity(activity).enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                if (response.isSuccessful()) {
+                    android.util.Log.d("Meditation", "Meditation session logged to backend");
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
+                android.util.Log.e("Meditation", "Failed to log meditation: " + t.getMessage());
+            }
+        });
     }
 
     private void pauseTimer() {

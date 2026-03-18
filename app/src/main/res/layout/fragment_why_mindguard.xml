@@ -75,6 +75,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/cardAITitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AI-Powered Support"
@@ -83,6 +84,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/cardAIDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -125,6 +127,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/cardPrivacyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Privacy First"
@@ -133,6 +136,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/cardPrivacyDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -175,6 +179,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/cardSafeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Safe Space"
@@ -183,6 +188,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/cardSafeDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

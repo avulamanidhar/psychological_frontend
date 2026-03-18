@@ -11,7 +11,12 @@ public final class TimeFormatUtils {
     private TimeFormatUtils() {}
 
     @NonNull
-    public static String formatRelative(@NonNull Date date) {
+    public static String formatRelative(@NonNull MoodEntry entry) {
+        if (entry.formattedTime != null && !entry.formattedTime.isEmpty()) {
+            return entry.formattedTime;
+        }
+        
+        Date date = new Date(entry.timestampMillis);
         Calendar now = Calendar.getInstance();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

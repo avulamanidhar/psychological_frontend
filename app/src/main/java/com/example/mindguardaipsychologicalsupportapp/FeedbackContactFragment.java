@@ -56,44 +56,30 @@ public class FeedbackContactFragment extends Fragment {
             return;
         }
 
-        SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String userName = prefs.getString("user_name", "User");
-        
+        Map<String, Object> feedback = new HashMap<>();
+        feedback.put("subject", subject);
+        feedback.put("message", message);
+        feedback.put("rating", rating);
+
         MindGuardApiService api = RetrofitClient.getApiService();
-        
-        api.getUserProfile(userName).enqueue(new Callback<Map<String, Object>>() {
+        api.submitFeedback(feedback).enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Double userIdDouble = (Double) response.body().get("id");
-                    int userId = userIdDouble.intValue();
-                    
-                    Map<String, Object> feedback = new HashMap<>();
-                    feedback.put("user", userId);
-                    feedback.put("subject", subject);
-                    feedback.put("message", message);
-                    feedback.put("rating", rating);
-
-                    api.submitFeedback(feedback).enqueue(new Callback<Map<String, Object>>() {
-                        @Override
-                        public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(requireContext(), "Feedback submitted! Thank you.", Toast.LENGTH_SHORT).show();
-                                Navigation.findNavController(getView()).navigateUp();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                            Toast.makeText(getContext(), "Failed to submit feedback", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if (isAdded()) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(requireContext(), "Feedback submitted! Thank you.", Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(requireView()).navigateUp();
+                    } else {
+                        Toast.makeText(requireContext(), "Submission failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                 Toast.makeText(getContext(), "Error fetching user", Toast.LENGTH_SHORT).show();
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -122,7 +122,7 @@ public class MoodHistoryFragment extends Fragment {
 
         img.setImageResource(e.moodImageResId);
         name.setText(e.moodName);
-        time.setText(TimeFormatUtils.formatRelative(new Date(e.timestampMillis)));
+        time.setText(TimeFormatUtils.formatRelative(e));
 
         progress.setProgress(e.intensity);
         int indicator = MoodUi.colorForMood(getResources(), e.moodName);

@@ -91,6 +91,7 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/txtStepTitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Log Your Mood"
@@ -99,6 +100,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtStepDesc1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -140,6 +142,7 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/txtStepTitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Get AI Insights"
@@ -148,6 +151,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtStepDesc2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -189,6 +193,7 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/txtStepTitle3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Find Support"
@@ -197,6 +202,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtStepDesc3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

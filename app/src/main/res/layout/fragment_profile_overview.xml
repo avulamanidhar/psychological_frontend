@@ -81,6 +81,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardHeaderGradient">
 
                 <ImageView
+                    android:id="@+id/profileAvatarImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="12dp"
@@ -142,16 +143,12 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/goalsChipGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/tag_background"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="4dp"
-                android:text="Build Resilience"
-                android:textColor="@color/button_blue"
-                android:textSize="14sp" />
+                app:chipSpacing="8dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -180,6 +177,13 @@
                 android:textColor="@color/desc_gray"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/supportChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:chipSpacing="8dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

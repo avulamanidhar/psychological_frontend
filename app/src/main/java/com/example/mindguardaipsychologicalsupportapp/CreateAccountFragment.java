@@ -17,7 +17,7 @@ import androidx.navigation.Navigation;
 
 public class CreateAccountFragment extends Fragment {
 
-    private EditText etFullName;
+    private EditText etFullName, etEmail, etPassword;
 
     @Nullable
     @Override
@@ -25,6 +25,8 @@ public class CreateAccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_account, container, false);
 
         etFullName = view.findViewById(R.id.etFullName);
+        etEmail = view.findViewById(R.id.etEmail);
+        etPassword = view.findViewById(R.id.etPassword);
         Button createAccountButton = view.findViewById(R.id.createAccountButton);
         TextView loginText = view.findViewById(R.id.loginText);
         
@@ -33,16 +35,26 @@ public class CreateAccountFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String name = etFullName.getText().toString().trim();
-                    if (name.isEmpty()) {
-                        Toast.makeText(getContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
+                    String email = etEmail.getText().toString().trim();
+                    String password = etPassword.getText().toString().trim();
+
+                    if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                        Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     // Create user map for API
-                    java.util.HashMap<String, String> userMap = new java.util.HashMap<>();
+                    java.util.HashMap<String, Object> userMap = new java.util.HashMap<>();
                     userMap.put("username", name);
-                    userMap.put("password", "password123"); // Default password for demo
-                    userMap.put("email", name.toLowerCase().replace(" ", ".") + "@example.com");
+                    userMap.put("password", password);
+                    userMap.put("email", email);
+
+                    // Fetch consent choices from SharedPreferences
+                    SharedPreferences consentPrefs = requireActivity().getSharedPreferences("Consent", Context.MODE_PRIVATE);
+                    userMap.put("privacy_consent_accepted", consentPrefs.getBoolean("privacy_accepted", false));
+                    userMap.put("essential_data_processing", consentPrefs.getBoolean("essential_data", true));
+                    userMap.put("anonymous_analytics", consentPrefs.getBoolean("anonymous_analytics", false));
+                    userMap.put("privacy_policy_version", consentPrefs.getString("policy_version", "1.0.0"));
 
                     com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
                         .registerUser(userMap)
@@ -61,7 +73,12 @@ public class CreateAccountFragment extends Fragment {
                                         Toast.makeText(getContext(), "Navigation failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Toast.makeText(getContext(), "Registration failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                                    try {
+                                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                                        Toast.makeText(getContext(), "Registration failed: " + errorBody, Toast.LENGTH_LONG).show();
+                                    } catch (Exception e) {
+                                        Toast.makeText(getContext(), "Registration failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
 

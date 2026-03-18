@@ -43,6 +43,7 @@
             android:paddingBottom="24dp">
 
             <TextView
+                android:id="@+id/txtAnalysisTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="AI Analysis"
@@ -51,6 +52,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtAnalysisSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -93,6 +95,7 @@
                             android:layout_marginStart="16dp"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/txtStep1Title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Data Collection"
@@ -100,6 +103,7 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtStep1Desc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -136,6 +140,7 @@
                             android:layout_marginStart="16dp"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/txtStep2Title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pattern Recognition"
@@ -143,6 +148,7 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtStep2Desc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -179,6 +185,7 @@
                             android:layout_marginStart="16dp"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/txtStep3Title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Keyword Correlation"
@@ -186,6 +193,7 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtStep3Desc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -222,6 +230,7 @@
                             android:layout_marginStart="16dp"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/txtStep4Title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Confidence Scoring"
@@ -229,6 +238,7 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/txtStep4Desc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -260,6 +270,7 @@
                     android:layout_marginStart="16dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/txtConfidenceLevel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Confidence Level: 92%"
@@ -267,6 +278,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/txtDataPoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"

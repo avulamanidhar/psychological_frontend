@@ -23,6 +23,12 @@ public class ToolBreathingFragment extends Fragment {
     private TextView txtBreathLabel, txtSessionInfo;
     private MaterialCardView btnPlay;
 
+    private int inhaleMs = 4000;
+    private int holdMs = 7000;
+    private int exhaleMs = 8000;
+    private int waitMs = 0;
+    private String patternName = "Breathing";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,13 +48,34 @@ public class ToolBreathingFragment extends Fragment {
             }
         });
 
+        // Fetch Backend Config
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        api.getBreathingPattern().enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        java.util.Map<String, Object> body = response.body();
+                        if (body.containsKey("inhale_ms")) inhaleMs = ((Number) body.get("inhale_ms")).intValue();
+                        if (body.containsKey("hold_ms")) holdMs = ((Number) body.get("hold_ms")).intValue();
+                        if (body.containsKey("exhale_ms")) exhaleMs = ((Number) body.get("exhale_ms")).intValue();
+                        if (body.containsKey("wait_ms")) waitMs = ((Number) body.get("wait_ms")).intValue();
+                        if (body.containsKey("name")) patternName = (String) body.get("name");
+                    } catch (Exception e) {}
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {}
+        });
+
         view.findViewById(R.id.btnReset).setOnClickListener(v -> {
             resetBreathing();
         });
 
         view.findViewById(R.id.btnCompleteSession).setOnClickListener(v -> {
             Bundle b = new Bundle();
-            b.putString("exerciseName", "Breathing");
+            b.putString("exerciseName", patternName);
+            b.putInt("duration", Math.max(1, seconds / 60));
             Navigation.findNavController(view).navigate(R.id.action_toolBreathingFragment_to_toolCompleteFragment, b);
         });
 
@@ -102,23 +129,31 @@ public class ToolBreathingFragment extends Fragment {
         
         txtBreathLabel.setText("Inhale");
         handler.postDelayed(() -> {
-            if (isRunning) {
-                txtBreathLabel.setText("Hold");
+            if (!isRunning) return;
+            txtBreathLabel.setText("Hold");
+            handler.postDelayed(() -> {
+                if (!isRunning) return;
+                txtBreathLabel.setText("Exhale");
                 handler.postDelayed(() -> {
-                    if (isRunning) {
-                        txtBreathLabel.setText("Exhale");
-                        handler.postDelayed(() -> {
-                            if (isRunning) {
-                                cycles++;
-                                seconds += 19;
-                                updateInfo();
-                                startBreathingAnimation();
-                            }
-                        }, 8000);
+                    if (!isRunning) return;
+                    
+                    Runnable cycleEnd = () -> {
+                        cycles++;
+                        seconds += (inhaleMs + holdMs + exhaleMs + waitMs) / 1000;
+                        updateInfo();
+                        startBreathingAnimation();
+                    };
+
+                    if (waitMs > 0) {
+                        txtBreathLabel.setText("Wait");
+                        handler.postDelayed(cycleEnd, waitMs);
+                    } else {
+                        cycleEnd.run();
                     }
-                }, 7000);
-            }
-        }, 4000);
+                    
+                }, exhaleMs);
+            }, holdMs);
+        }, inhaleMs);
     }
 
     private void updateInfo() {

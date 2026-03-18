@@ -120,6 +120,9 @@ public class HomeFragment extends Fragment {
             });
         }
 
+        // Fetch Real-time Dashboard Data
+        fetchDashboardData();
+
         // Demo Alerts
         View btnAlertMild = view.findViewById(R.id.btnAlertMild);
         if (btnAlertMild != null) btnAlertMild.setOnClickListener(v -> showMildAlertBottomSheet());
@@ -131,6 +134,61 @@ public class HomeFragment extends Fragment {
         if (btnAlertHigh != null) btnAlertHigh.setOnClickListener(v -> showHighAlertBottomSheet());
 
         return view;
+    }
+
+    private void fetchDashboardData() {
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        api.getDashboardSummary(userName).enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    java.util.Map<String, Object> data = response.body();
+                    
+                    if (getActivity() == null) return;
+                    getActivity().runOnUiThread(() -> {
+                        // Update Greeting
+                        if (txtGreeting != null && data.containsKey("greeting")) {
+                            txtGreeting.setText(data.get("greeting").toString() + " 👋");
+                        }
+
+                        // Update Mental Health Score
+                        if (txtMentalHealthScore != null && data.containsKey("mental_health_score")) {
+                            txtMentalHealthScore.setText(String.valueOf(data.get("mental_health_score")));
+                        }
+
+                        // Update Recommendation
+                        if (txtRecommendation != null && data.containsKey("recommended_activity")) {
+                            txtRecommendation.setText(data.get("recommended_activity").toString());
+                        }
+
+                        // Update Latest Mood
+                        if (txtLatestMoodName != null) {
+                            java.util.Map<String, Object> latestMood = (java.util.Map<String, Object>) data.get("latest_mood");
+                            if (latestMood != null && latestMood.containsKey("moodName")) {
+                                txtLatestMoodName.setText(latestMood.get("moodName").toString());
+                            } else {
+                                txtLatestMoodName.setText("No entries yet");
+                            }
+                        }
+                        
+                        // Handle Risk Level Alerts (Optional UI extension)
+                        if (data.containsKey("risk_level")) {
+                            String risk = data.get("risk_level").toString();
+                            if ("High".equalsIgnoreCase(risk)) {
+                                // Potentially show high alert automatically or change UI color
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Error syncing dashboard", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void showMildAlertBottomSheet() {

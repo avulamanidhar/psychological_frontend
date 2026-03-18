@@ -23,7 +23,38 @@ public class HelpFaqFragment extends Fragment {
         setupExpandable(view, R.id.q2, R.id.a2, R.id.ic2);
         setupExpandable(view, R.id.q3, R.id.a3, R.id.ic3);
 
+        fetchFaqs(view);
+
         return view;
+    }
+
+    private void fetchFaqs(View view) {
+        com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
+            .getFaqs()
+            .enqueue(new retrofit2.Callback<java.util.List<java.util.Map<String, Object>>>() {
+                @Override
+                public void onResponse(retrofit2.Call<java.util.List<java.util.Map<String, Object>>> call, retrofit2.Response<java.util.List<java.util.Map<String, Object>>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        updateFaqUI(view, response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<java.util.List<java.util.Map<String, Object>>> call, Throwable t) {}
+            });
+    }
+
+    private void updateFaqUI(View view, java.util.List<java.util.Map<String, Object>> faqs) {
+        if (faqs.size() >= 1) updateSlot(view, R.id.txtQ1, R.id.a1, faqs.get(0));
+        if (faqs.size() >= 2) updateSlot(view, R.id.txtQ2, R.id.a2, faqs.get(1));
+        if (faqs.size() >= 3) updateSlot(view, R.id.txtQ3, R.id.a3, faqs.get(2));
+    }
+
+    private void updateSlot(View view, int qId, int aId, java.util.Map<String, Object> faq) {
+        TextView q = view.findViewById(qId);
+        TextView a = view.findViewById(aId);
+        if (q != null) q.setText((String) faq.get("question"));
+        if (a != null) a.setText((String) faq.get("answer"));
     }
 
     private void setupExpandable(View root, int questionId, int answerId, int iconId) {

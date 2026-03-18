@@ -1,14 +1,26 @@
 package com.example.mindguardaipsychologicalsupportapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
+import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SettingsFragment extends Fragment {
 
@@ -60,8 +72,31 @@ public class SettingsFragment extends Fragment {
         View logoutBtn = view.findViewById(R.id.btnLogout);
         if (logoutBtn != null) {
             logoutBtn.setOnClickListener(v -> {
+                SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                prefs.edit().clear().apply();
                 Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.initialLogoFragment);
+            });
+        }
+        
+        TextView appVersionText = view.findViewById(R.id.appVersionText);
+        if (appVersionText != null) {
+            MindGuardApiService apiService = RetrofitClient.getApiService();
+            apiService.getSystemStatus().enqueue(new Callback<Map<String, Object>>() {
+                @Override
+                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        String version = (String) response.body().get("version");
+                        if (version != null) {
+                            appVersionText.setText("Version " + version);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                    // Retain default version text
+                }
             });
         }
 
