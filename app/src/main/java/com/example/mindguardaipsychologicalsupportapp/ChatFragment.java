@@ -113,52 +113,48 @@ public class ChatFragment extends Fragment {
         String msg = etChatMessage.getText().toString().trim();
         if (msg.isEmpty()) return;
 
-        addUserMessage(msg, true);
+        addUserMessage(msg, false); // Display locally first
         etChatMessage.setText("");
 
-        // Check for mode switches
+        // Check for mode switches (optional: could also be handled by backend)
         if (msg.toLowerCase().contains("switch to calm mode")) {
             currentMode = "Calm";
-            addAssistantMessage("Calm Mode activated. I'll be here to soothe and comfort you. 🌊", true);
-            return;
         } else if (msg.toLowerCase().contains("switch to cbt coach mode")) {
             currentMode = "CBT";
-            addAssistantMessage("CBT Coach Mode activated. Let's work through your thoughts together step-by-step. 🧠", true);
-            return;
         } else if (msg.toLowerCase().contains("switch to listener mode")) {
             currentMode = "Listener";
-            addAssistantMessage("Listener Mode activated. I'm all ears, mawa. No advice, just here for you. 👂", true);
-            return;
         } else if (msg.toLowerCase().contains("switch to general mode")) {
             currentMode = "General";
-            addAssistantMessage("Back to General Mode. How can I support you? ✨", true);
-            return;
         }
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            String response = generateTherapeuticResponse(msg, selectedLanguage);
-            addAssistantMessage(response, true);
-        }, 1500);
-    }
-
-    private void saveMessage(String text, boolean isUser) {
         MindGuardApiService api = RetrofitClient.getApiService();
         Map<String, Object> payload = new HashMap<>();
-        // Note: For simplicity, the backend now expects user IDs. 
-        // We'll use a hardcoded user ID 1 for now or we should fetch the user ID.
-        // For a better design, we'd have the user ID stored in Prefs.
-        payload.put("user", 1); // Mock ID
-        payload.put("text", text);
-        payload.put("is_user", isUser);
+        payload.put("text", msg);
         payload.put("mode", currentMode);
         payload.put("language", selectedLanguage);
 
         api.sendChatMessage(payload).enqueue(new Callback<Map<String, Object>>() {
             @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {}
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, Object> aiMsgMap = (Map<String, Object>) response.body().get("ai_message");
+                    if (aiMsgMap != null) {
+                        String aiText = (String) aiMsgMap.get("text");
+                        addAssistantMessage(aiText, false);
+                    }
+                }
+            }
+
             @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {}
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                // Handle failure
+            }
         });
+    }
+
+    private void saveMessage(String text, boolean isUser) {
+        // This method is now redundant as the backend handles saving both user and AI messages in one POST call.
+        // It's kept for backward compatibility if needed, but not used in the new flow.
     }
 
     private String getGreeting(String lang) {

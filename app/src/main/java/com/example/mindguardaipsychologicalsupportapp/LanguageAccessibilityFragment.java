@@ -21,6 +21,8 @@ public class LanguageAccessibilityFragment extends Fragment {
 
     private Button btnSmall, btnMedium, btnLarge;
     private AutoCompleteTextView languageAutoComplete;
+    private androidx.appcompat.widget.SwitchCompat switchContrast, switchReader;
+    private String selectedTextSize = "Medium";
 
     @Nullable
     @Override
@@ -31,31 +33,34 @@ public class LanguageAccessibilityFragment extends Fragment {
         btnSmall = view.findViewById(R.id.btnTextSmall);
         btnMedium = view.findViewById(R.id.btnTextMedium);
         btnLarge = view.findViewById(R.id.btnTextLarge);
+        switchContrast = view.findViewById(R.id.switchHighContrast);
+        switchReader = view.findViewById(R.id.switchScreenReader);
 
         // Setup Languages
         String[] languages = {"English", "Spanish", "French", "German", "Chinese", "Hindi", "Telugu"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, languages);
         languageAutoComplete.setAdapter(adapter);
 
-        // Load saved language
+        // Load saved preferences
         SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String savedLang = prefs.getString("selected_language", "English");
-        languageAutoComplete.setText(savedLang, false);
+        languageAutoComplete.setText(prefs.getString("selected_language", "English"), false);
+        selectedTextSize = prefs.getString("selected_text_size", "Medium");
+        
+        // Initial UI state
+        if ("Small".equals(selectedTextSize)) updateTextSizeUI(btnSmall, "Small");
+        else if ("Large".equals(selectedTextSize)) updateTextSizeUI(btnLarge, "Large");
+        else updateTextSizeUI(btnMedium, "Medium");
 
-        languageAutoComplete.setOnItemClickListener((parent, view1, position, id) -> {
-            String selectedLang = (String) parent.getItemAtPosition(position);
-            prefs.edit().putString("selected_language", selectedLang).apply();
-        });
+        if (switchContrast != null) switchContrast.setChecked(prefs.getBoolean("high_contrast", false));
+        if (switchReader != null) switchReader.setChecked(prefs.getBoolean("screen_reader", false));
 
-        // Setup Text Size Buttons
-        btnSmall.setOnClickListener(v -> updateTextSizeUI(btnSmall));
-        btnMedium.setOnClickListener(v -> updateTextSizeUI(btnMedium));
-        btnLarge.setOnClickListener(v -> updateTextSizeUI(btnLarge));
+        // Setup Listeners
+        btnSmall.setOnClickListener(v -> updateTextSizeUI(btnSmall, "Small"));
+        btnMedium.setOnClickListener(v -> updateTextSizeUI(btnMedium, "Medium"));
+        btnLarge.setOnClickListener(v -> updateTextSizeUI(btnLarge, "Large"));
 
         Button nextButton = view.findViewById(R.id.nextButtonLangAcc);
-        nextButton.setOnClickListener(v -> {
-            saveSettingsToBackend(view);
-        });
+        nextButton.setOnClickListener(v -> saveSettingsToBackend(view));
 
         TextView backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
@@ -64,21 +69,28 @@ public class LanguageAccessibilityFragment extends Fragment {
     }
 
     private void saveSettingsToBackend(View view) {
-        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+        SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String userName = prefs.getString("user_name", "User");
         String selectedLang = languageAutoComplete.getText().toString();
-        
-        // Determine text size based on button state (simple version)
-        String textSize = "Medium";
-        if (btnSmall.getTextColors().getDefaultColor() == ContextCompat.getColor(requireContext(), R.color.white)) textSize = "Small";
-        if (btnLarge.getTextColors().getDefaultColor() == ContextCompat.getColor(requireContext(), R.color.white)) textSize = "Large";
+        boolean contrast = switchContrast != null && switchContrast.isChecked();
+        boolean reader = switchReader != null && switchReader.isChecked();
 
-        java.util.Map<String, Object> profileUpdates = new java.util.HashMap<>();
-        profileUpdates.put("language", selectedLang);
-        profileUpdates.put("text_size", textSize);
+        // Save locally
+        prefs.edit()
+            .putString("selected_language", selectedLang)
+            .putString("selected_text_size", selectedTextSize)
+            .putBoolean("high_contrast", contrast)
+            .putBoolean("screen_reader", reader)
+            .apply();
+
+        java.util.Map<String, Object> updates = new java.util.HashMap<>();
+        updates.put("language", selectedLang);
+        updates.put("text_size", selectedTextSize);
+        updates.put("high_contrast", contrast);
+        updates.put("screen_reader", reader);
 
         com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
-            .updateUserProfile(userName, profileUpdates)
+            .updateUserProfile(userName, updates)
             .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
                 @Override
                 public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
@@ -92,7 +104,8 @@ public class LanguageAccessibilityFragment extends Fragment {
             });
     }
 
-    private void updateTextSizeUI(Button selectedButton) {
+    private void updateTextSizeUI(Button selectedButton, String size) {
+        selectedTextSize = size;
         resetButtonStyle(btnSmall);
         resetButtonStyle(btnMedium);
         resetButtonStyle(btnLarge);
@@ -105,4 +118,4 @@ public class LanguageAccessibilityFragment extends Fragment {
         button.setBackgroundTintList(ColorStateList.valueOf(android.graphics.Color.TRANSPARENT));
         button.setTextColor(ContextCompat.getColor(requireContext(), R.color.desc_gray));
     }
-}
+}

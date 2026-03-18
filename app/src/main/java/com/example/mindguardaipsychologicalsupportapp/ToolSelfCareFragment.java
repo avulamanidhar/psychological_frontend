@@ -33,6 +33,32 @@ public class ToolSelfCareFragment extends Fragment {
         setupItem(view, R.id.item5, R.id.check5, 5);
         setupItem(view, R.id.item6, R.id.check6, 6);
 
+        int[] textIds = {R.id.text1, R.id.text2, R.id.text3, R.id.text4, R.id.text5, R.id.text6};
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        api.getSelfCareConfig().enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        java.util.Map<String, Object> body = response.body();
+                        if (body.containsKey("items")) {
+                            java.util.List<String> items = (java.util.List<String>) body.get("items");
+                            if (items != null) {
+                                for (int i = 0; i < Math.min(items.size(), textIds.length); i++) {
+                                    TextView txt = view.findViewById(textIds[i]);
+                                    if (txt != null) {
+                                        txt.setText(items.get(i));
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception e) {}
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {}
+        });
+
         view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
         view.findViewById(R.id.btnComplete).setOnClickListener(v -> {

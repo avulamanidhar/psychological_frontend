@@ -7,14 +7,16 @@
     android:background="@color/bg_splash">
 
     <TextView
-        android:id="@+id/backButton"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="‹ Back"
         android:textColor="@color/desc_gray"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,288 +25,293 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="How can we help?"
         android:textColor="@color/title_blue"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
 
     <TextView
         android:id="@+id/subtitleHowHelp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Choose your preferred support types"
+        android:text="Select areas you'd like to focus on"
         android:textColor="@color/desc_gray"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/titleHowHelp"
         app:layout_constraintTop_toBottomOf="@+id/titleHowHelp" />
 
-    <LinearLayout
-        android:id="@+id/optionsContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/nextButtonHowHelp"
         app:layout_constraintTop_toBottomOf="@+id/subtitleHowHelp">
 
-        <!-- Chat Support -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardChatSupport"
+        <LinearLayout
+            android:id="@+id/optionsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
-            <RelativeLayout
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical">
+
+            <!-- Chat -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardChatSupport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-                <ImageView
-                    android:id="@+id/iconChat"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/img_19" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/iconChat"
-                    android:orientation="vertical">
-                    <TextView
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/iconChat"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_21" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chat Support"
-                        android:textColor="@color/title_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Talk with AI anytime"
-                        android:textColor="@color/desc_gray"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <ImageView
-                    android:id="@+id/selectChat"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/option_radio_unchecked"
-                    android:padding="4dp" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/iconChat"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chat Support"
+                            android:textColor="@color/title_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Talk to our AI companion"
+                            android:textColor="@color/desc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/selectChat"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/option_radio_unchecked"
+                        android:padding="4dp" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-        <!-- Breathing Exercises -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardBreathing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
-            <RelativeLayout
+            <!-- Breathing -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardBreathing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-                <ImageView
-                    android:id="@+id/iconBreathing"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/img_20" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/iconBreathing"
-                    android:orientation="vertical">
-                    <TextView
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/iconBreathing"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_40" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Breathing Exercises"
-                        android:textColor="@color/title_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calm your nervous system"
-                        android:textColor="@color/desc_gray"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <ImageView
-                    android:id="@+id/selectBreathing"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/option_radio_unchecked"
-                    android:padding="4dp" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/iconBreathing"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Breathing"
+                            android:textColor="@color/title_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Relax with 4-7-8 technique"
+                            android:textColor="@color/desc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/selectBreathing"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/option_radio_unchecked"
+                        android:padding="4dp" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-        <!-- Meditation -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardMeditation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
-            <RelativeLayout
+            <!-- Meditation -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardMeditation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-                <ImageView
-                    android:id="@+id/iconMeditation"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/img_21" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/iconMeditation"
-                    android:orientation="vertical">
-                    <TextView
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/iconMeditation"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_41" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Meditation"
-                        android:textColor="@color/title_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Guided mindfulness sessions"
-                        android:textColor="@color/desc_gray"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <ImageView
-                    android:id="@+id/selectMeditation"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/option_radio_unchecked"
-                    android:padding="4dp" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/iconMeditation"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Meditation"
+                            android:textColor="@color/title_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Find your inner peace"
+                            android:textColor="@color/desc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/selectMeditation"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/option_radio_unchecked"
+                        android:padding="4dp" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-        <!-- Journaling -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardJournaling"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
-            <RelativeLayout
+            <!-- Journaling -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardJournaling"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-                <ImageView
-                    android:id="@+id/iconJournaling"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/img_22" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/iconChat"
-                    android:orientation="vertical">
-                    <TextView
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/iconJournaling"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_22" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Journaling"
-                        android:textColor="@color/title_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Express your thoughts"
-                        android:textColor="@color/desc_gray"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <ImageView
-                    android:id="@+id/selectJournaling"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/option_radio_unchecked"
-                    android:padding="4dp" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/iconJournaling"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Journaling"
+                            android:textColor="@color/title_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Express your thoughts"
+                            android:textColor="@color/desc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/selectJournaling"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/option_radio_unchecked"
+                        android:padding="4dp" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-        <!-- Alerts -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardAlerts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
-            <RelativeLayout
+            <!-- Alerts -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardAlerts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-                <ImageView
-                    android:id="@+id/iconAlerts"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/img_23" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/iconAlerts"
-                    android:orientation="vertical">
-                    <TextView
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/iconAlerts"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_23" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Alerts &amp; Reminders"
-                        android:textColor="@color/title_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Stay on track"
-                        android:textColor="@color/desc_gray"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <ImageView
-                    android:id="@+id/selectAlerts"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/option_radio_unchecked"
-                    android:padding="4dp" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/iconAlerts"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Alerts &amp; Reminders"
+                            android:textColor="@color/title_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Stay on track"
+                            android:textColor="@color/desc_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/selectAlerts"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/option_radio_unchecked"
+                        android:padding="4dp" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/nextButtonHowHelp"

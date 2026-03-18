@@ -80,6 +80,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                         <TextView
+                            android:id="@+id/txtStressStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -90,6 +91,7 @@
                     </RelativeLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressStress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -100,6 +102,7 @@
                         app:trackThickness="8dp" />
 
                     <TextView
+                        android:id="@+id/txtStressDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -135,6 +138,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                         <TextView
+                            android:id="@+id/txtAnxietyStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -145,6 +149,7 @@
                     </RelativeLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressAnxiety"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -155,6 +160,7 @@
                         app:trackThickness="8dp" />
 
                     <TextView
+                        android:id="@+id/txtAnxietyDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -190,6 +196,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                         <TextView
+                            android:id="@+id/txtDepressionStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -200,6 +207,7 @@
                     </RelativeLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressDepression"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -210,6 +218,7 @@
                         app:trackThickness="8dp" />
 
                     <TextView
+                        android:id="@+id/txtDepressionDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -245,6 +254,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                         <TextView
+                            android:id="@+id/txtStabilityStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -255,6 +265,7 @@
                     </RelativeLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressStability"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -265,6 +276,7 @@
                         app:trackThickness="8dp" />
 
                     <TextView
+                        android:id="@+id/txtStabilityDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"

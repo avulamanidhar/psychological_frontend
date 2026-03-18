@@ -21,10 +21,38 @@ public class ToolMeditationFragment extends Fragment {
             btnBack.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
         }
 
+        String[] recommendedMode = {"Calm"};
+        int[] recommendedDuration = {5};
+
+        android.widget.TextView titleMeditation = view.findViewById(R.id.titleMeditation);
+
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        api.getMeditationContentConfig().enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        java.util.Map<String, Object> body = response.body();
+                        if (body.containsKey("subtitle") && titleMeditation != null) {
+                            titleMeditation.setText((String) body.get("subtitle"));
+                        }
+                        if (body.containsKey("recommended_mode")) recommendedMode[0] = (String) body.get("recommended_mode");
+                        if (body.containsKey("recommended_duration")) recommendedDuration[0] = ((Number) body.get("recommended_duration")).intValue();
+                    } catch (Exception e) {}
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {}
+        });
+
         View btnOpenMeditation = view.findViewById(R.id.btnOpenMeditation);
         if (btnOpenMeditation != null) {
             btnOpenMeditation.setOnClickListener(v -> {
-                Navigation.findNavController(view).navigate(R.id.action_toolMeditationFragment_to_meditationSessionFragment);
+                Bundle b = new Bundle();
+                b.putString("mode", recommendedMode[0]);
+                b.putInt("duration", recommendedDuration[0]);
+                Navigation.findNavController(view).navigate(R.id.action_toolMeditationFragment_to_meditationSessionFragment, b);
             });
         }
 

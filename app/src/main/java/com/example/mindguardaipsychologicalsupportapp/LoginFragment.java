@@ -45,9 +45,15 @@ public class LoginFragment extends Fragment {
                     public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             String username = (String) response.body().get("username");
+                            String accessToken = (String) response.body().get("access");
+                            String refreshToken = (String) response.body().get("refresh");
                             
                             android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
-                            prefs.edit().putString("user_name", username).apply();
+                            prefs.edit()
+                                .putString("user_name", username)
+                                .putString("auth_token", accessToken)
+                                .putString("refresh_token", refreshToken)
+                                .apply();
 
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
                         } else {

@@ -8,6 +8,11 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
+import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public final class MoodEntryStorage {
     private static final String PREFS = "mindguard_mood_entries";
@@ -20,27 +25,52 @@ public final class MoodEntryStorage {
         void onError(String message);
     }
 
-    public interface MoodFetchSingleCallback {
-        void onSuccess(MoodEntry entry);
-        void onError(String message);
-    }
-
-    public static void getAll(@NonNull Context context, MoodFetchCallback callback) {
-        List<MoodEntry> entries = loadFromPrefs(context);
-        Collections.sort(entries, (a, b) -> Long.compare(b.timestampMillis, a.timestampMillis));
-        callback.onSuccess(entries);
-    }
-
     public interface MoodAddCallback {
         void onSuccess(MoodEntry entry);
         void onError(String message);
     }
 
+    public interface MoodFetchSingleCallback {
+        void onSuccess(MoodEntry entry);
+        void onError(String message);
+    }
+
+    // Get all entries (Prefers local storage for speed, attempts sync in background)
+    public static void getAll(@NonNull Context context, MoodFetchCallback callback) {
+        List<MoodEntry> localEntries = loadFromPrefs(context);
+        Collections.sort(localEntries, (a, b) -> Long.compare(b.timestampMillis, a.timestampMillis));
+        callback.onSuccess(localEntries);
+    }
+
+    // Add entry (Saves to Local AND attempts to save to Server)
     public static void add(@NonNull Context context, @NonNull MoodEntry entry, MoodAddCallback callback) {
+        // 1. Save Locally first so it shows up immediately
         List<MoodEntry> entries = loadFromPrefs(context);
         entries.add(entry);
         saveToPrefs(context, entries);
-        callback.onSuccess(entry);
+
+        // 2. Try to save to Server
+        SharedPreferences settings = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String username = settings.getString("user_name", "User");
+
+        MindGuardApiService api = RetrofitClient.getApiService();
+        api.createMoodEntry(username, entry).enqueue(new Callback<MoodEntry>() {
+            @Override
+            public void onResponse(Call<MoodEntry> call, Response<MoodEntry> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    // Even if server fails, we already saved locally
+                    callback.onSuccess(entry);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoodEntry> call, Throwable t) {
+                // Network failed, but local save is done
+                callback.onSuccess(entry);
+            }
+        });
     }
 
     public static void getById(@NonNull Context context, @NonNull String id, MoodFetchSingleCallback callback) {

@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class HowCanWeHelpFragment extends Fragment {
 
-    private Set<Integer> selectedSupportIds = new HashSet<>();
+    private final Set<Integer> selectedSupportIds = new HashSet<>();
     private Button nextButton;
 
     @Nullable
@@ -45,18 +45,23 @@ public class HowCanWeHelpFragment extends Fragment {
             CardView card = view.findViewById(cardIds[i]);
             ImageView selectIcon = view.findViewById(selectIconIds[i]);
             
-            // Set initial state: gray circle
-            selectIcon.setImageResource(0); // No icon initially
-            
-            card.setOnClickListener(v -> toggleSupportSelection(card, selectIcon, cardIds[index]));
+            if (card != null && selectIcon != null) {
+                // Set initial state
+                selectIcon.setImageResource(0); 
+                card.setOnClickListener(v -> toggleSupportSelection(card, selectIcon, cardIds[index]));
+            }
         }
 
         nextButton.setOnClickListener(v -> {
             saveGoalsToBackend(view);
         });
 
-        TextView backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        View backButton = view.findViewById(R.id.btnBack);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        }
+
+        updateNextButton();
 
         return view;
     }
@@ -81,12 +86,12 @@ public class HowCanWeHelpFragment extends Fragment {
             .updateUserProfile(userName, profileUpdates)
             .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
                 @Override
-                public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                public void onResponse(@NonNull retrofit2.Call<java.util.Map<String, Object>> call, @NonNull retrofit2.Response<java.util.Map<String, Object>> response) {
                     Navigation.findNavController(view).navigate(R.id.action_howCanWeHelpFragment_to_languageAccessibilityFragment);
                 }
 
                 @Override
-                public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
+                public void onFailure(@NonNull retrofit2.Call<java.util.Map<String, Object>> call, @NonNull Throwable t) {
                     Navigation.findNavController(view).navigate(R.id.action_howCanWeHelpFragment_to_languageAccessibilityFragment);
                 }
             });
@@ -95,27 +100,25 @@ public class HowCanWeHelpFragment extends Fragment {
     private void toggleSupportSelection(CardView card, ImageView selectIcon, int id) {
         if (selectedSupportIds.contains(id)) {
             selectedSupportIds.remove(id);
-            // Deselected: Reset to empty gray circle
             selectIcon.setImageResource(0); 
-            selectIcon.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.darker_gray)));
+            selectIcon.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.darker_gray)));
         } else {
             selectedSupportIds.add(id);
-            // Selected: Show tick mark and blue background
             selectIcon.setImageResource(R.drawable.ic_check);
-            selectIcon.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button_blue)));
+            selectIcon.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.button_blue)));
         }
         updateNextButton();
     }
 
     private void updateNextButton() {
-        if (selectedSupportIds.size() > 0) {
+        if (!selectedSupportIds.isEmpty()) {
             nextButton.setEnabled(true);
-            nextButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button_blue)));
-            nextButton.setTextColor(getResources().getColor(R.color.white));
+            nextButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.button_blue)));
+            nextButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
         } else {
             nextButton.setEnabled(false);
-            nextButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.darker_gray)));
-            nextButton.setTextColor(getResources().getColor(R.color.desc_gray));
+            nextButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.darker_gray)));
+            nextButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.desc_gray));
         }
     }
 }

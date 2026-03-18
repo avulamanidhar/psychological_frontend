@@ -34,20 +34,24 @@ public class EntryDetailsFragment extends Fragment {
             return view;
         }
 
-        MoodEntryStorage.getById(requireContext(), entryId, new MoodEntryStorage.MoodFetchSingleCallback() {
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        api.getMoodDetail(entryId).enqueue(new retrofit2.Callback<MoodEntry>() {
             @Override
-            public void onSuccess(MoodEntry entry) {
-                if (getActivity() == null) return;
-                getActivity().runOnUiThread(() -> bind(view, entry));
+            public void onResponse(retrofit2.Call<MoodEntry> call, retrofit2.Response<MoodEntry> response) {
+                if (isAdded() && response.isSuccessful() && response.body() != null) {
+                    bind(view, response.body());
+                } else if (isAdded()) {
+                    android.widget.Toast.makeText(requireContext(), "Error loading entry", android.widget.Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(view).navigateUp();
+                }
             }
 
             @Override
-            public void onError(String message) {
-                if (getActivity() == null) return;
-                getActivity().runOnUiThread(() -> {
-                    android.widget.Toast.makeText(requireContext(), "Error loading entry: " + message, android.widget.Toast.LENGTH_SHORT).show();
+            public void onFailure(retrofit2.Call<MoodEntry> call, Throwable t) {
+                if (isAdded()) {
+                    android.widget.Toast.makeText(requireContext(), "Network error: " + t.getMessage(), android.widget.Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view).navigateUp();
-                });
+                }
             }
         });
 
@@ -67,7 +71,7 @@ public class EntryDetailsFragment extends Fragment {
         TextView txtJournal = view.findViewById(R.id.txtJournal);
         TextView txtAi = view.findViewById(R.id.txtAiReflection);
 
-        txtDate.setText(TimeFormatUtils.formatRelative(new Date(e.timestampMillis)));
+        txtDate.setText(TimeFormatUtils.formatRelative(e));
         imgMood.setImageResource(e.moodImageResId);
         moodName.setText(e.moodName);
         intensity.setText("Intensity: " + e.intensity + "%");

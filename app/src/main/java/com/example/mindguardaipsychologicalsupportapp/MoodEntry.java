@@ -20,6 +20,29 @@ public final class MoodEntry {
     @NonNull public final List<String> triggers;
     @NonNull public final String journal;
     @NonNull public final String aiReflection;
+    @Nullable public final String formattedTime;
+
+    public MoodEntry(
+            @NonNull String id,
+            long timestampMillis,
+            @NonNull String moodName,
+            int moodImageResId,
+            int intensity,
+            @NonNull List<String> triggers,
+            @NonNull String journal,
+            @NonNull String aiReflection,
+            @Nullable String formattedTime
+    ) {
+        this.id = id;
+        this.timestampMillis = timestampMillis;
+        this.moodName = moodName;
+        this.moodImageResId = moodImageResId;
+        this.intensity = intensity;
+        this.triggers = triggers;
+        this.journal = journal;
+        this.aiReflection = aiReflection;
+        this.formattedTime = formattedTime;
+    }
 
     public MoodEntry(
             @NonNull String id,
@@ -31,14 +54,7 @@ public final class MoodEntry {
             @NonNull String journal,
             @NonNull String aiReflection
     ) {
-        this.id = id;
-        this.timestampMillis = timestampMillis;
-        this.moodName = moodName;
-        this.moodImageResId = moodImageResId;
-        this.intensity = intensity;
-        this.triggers = triggers;
-        this.journal = journal;
-        this.aiReflection = aiReflection;
+        this(id, timestampMillis, moodName, moodImageResId, intensity, triggers, journal, aiReflection, null);
     }
 
     @NonNull
@@ -74,6 +90,7 @@ public final class MoodEntry {
         o.put("intensity", intensity);
         o.put("journal", journal);
         o.put("aiReflection", aiReflection);
+        if (formattedTime != null) o.put("formatted_time", formattedTime);
         JSONArray arr = new JSONArray();
         for (String t : triggers) arr.put(t);
         o.put("triggers", arr);
@@ -97,7 +114,9 @@ public final class MoodEntry {
             }
         }
         String aiReflection = o.optString("aiReflection", ReflectionGenerator.generate(moodName, intensity, triggers));
-        return new MoodEntry(id, ts, moodName, moodImageResId, intensity, triggers, journal, aiReflection);
+        String formattedTime = o.optString("formatted_time", null);
+        if (formattedTime != null && formattedTime.isEmpty()) formattedTime = null;
+        return new MoodEntry(id, ts, moodName, moodImageResId, intensity, triggers, journal, aiReflection, formattedTime);
     }
 }
 

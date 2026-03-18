@@ -22,8 +22,10 @@ public class ToolFocusTimerFragment extends Fragment {
     private MaterialCardView btnPlay, tabFocus, tabBreak;
     private CountDownTimer countDownTimer;
     private boolean isTimerRunning = false;
-    private long timeLeftInMillis = 1500000; // 25 minutes
-    private long initialTimeInMillis = 1500000;
+    private long focusTimeConfigured = 1500000;
+    private long breakTimeConfigured = 300000;
+    private long timeLeftInMillis = focusTimeConfigured; 
+    private long initialTimeInMillis = focusTimeConfigured;
     private boolean isFocusMode = true;
 
     @Nullable
@@ -52,6 +54,27 @@ public class ToolFocusTimerFragment extends Fragment {
         tabFocus.setOnClickListener(v -> setMode(true));
         tabBreak.setOnClickListener(v -> setMode(false));
 
+        // Fetch Config from backend
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        api.getFocusTimerConfig().enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        java.util.Map<String, Object> body = response.body();
+                        if (body.containsKey("focus_minutes")) focusTimeConfigured = ((Number) body.get("focus_minutes")).longValue() * 60000;
+                        if (body.containsKey("break_minutes")) breakTimeConfigured = ((Number) body.get("break_minutes")).longValue() * 60000;
+                        
+                        if (!isTimerRunning && timeLeftInMillis == initialTimeInMillis) {
+                            setMode(isFocusMode); 
+                        }
+                    } catch (Exception e) {}
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {}
+        });
+
         // Bottom Navigation
         view.findViewById(R.id.btnNavHome).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolFocusTimerFragment_to_homeFragment));
         view.findViewById(R.id.btnNavMood).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_toolFocusTimerFragment_to_moodSelectionFragment));
@@ -68,7 +91,7 @@ public class ToolFocusTimerFragment extends Fragment {
     private void setMode(boolean focus) {
         if (isTimerRunning) pauseTimer();
         isFocusMode = focus;
-        initialTimeInMillis = isFocusMode ? 1500000 : 300000; // 25m or 5m
+        initialTimeInMillis = isFocusMode ? focusTimeConfigured : breakTimeConfigured;
         timeLeftInMillis = initialTimeInMillis;
         txtTimerLabel.setText(isFocusMode ? "Focus Time" : "Break Time");
         updateCountDownText();
@@ -105,6 +128,7 @@ public class ToolFocusTimerFragment extends Fragment {
                 updatePlayIcon("▶");
                 Bundle b = new Bundle();
                 b.putString("exerciseName", isFocusMode ? "Focus Session" : "Break Session");
+                b.putInt("duration", Math.max(1, (int)(initialTimeInMillis / 60000)));
                 Navigation.findNavController(requireView()).navigate(R.id.action_toolFocusTimerFragment_to_toolCompleteFragment, b);
             }
         }.start();
