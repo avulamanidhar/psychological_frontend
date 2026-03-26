@@ -28,6 +28,12 @@ public interface MindGuardApiService {
     @POST("api/forgot-password/")
     Call<Map<String, Object>> forgotPassword(@Body Map<String, String> data);
 
+    @POST("api/verify-otp/")
+    Call<Map<String, Object>> verifyOtp(@Body Map<String, String> data);
+
+    @POST("api/reset-password/")
+    Call<Map<String, Object>> resetPassword(@Body Map<String, String> data);
+
     @GET("api/profile/{username}/")
     Call<Map<String, Object>> getUserProfile(@Path("username") String username);
 

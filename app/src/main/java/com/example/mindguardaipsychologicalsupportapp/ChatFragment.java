@@ -83,7 +83,7 @@ public class ChatFragment extends Fragment {
     }
 
     private void loadChatHistory() {
-        MindGuardApiService api = RetrofitClient.getApiService();
+        MindGuardApiService api = RetrofitClient.getApiService(requireContext());
         api.getChatHistory(userName).enqueue(new Callback<List<Map<String, Object>>>() {
             @Override
             public void onResponse(Call<List<Map<String, Object>>> call, Response<List<Map<String, Object>>> response) {
@@ -127,7 +127,7 @@ public class ChatFragment extends Fragment {
             currentMode = "General";
         }
 
-        MindGuardApiService api = RetrofitClient.getApiService();
+        MindGuardApiService api = RetrofitClient.getApiService(requireContext());
         Map<String, Object> payload = new HashMap<>();
         payload.put("text", msg);
         payload.put("mode", currentMode);
@@ -142,12 +142,14 @@ public class ChatFragment extends Fragment {
                         String aiText = (String) aiMsgMap.get("text");
                         addAssistantMessage(aiText, false);
                     }
+                } else {
+                    addAssistantMessage("Error: " + response.code() + " - I'm having trouble thinking right now. Please try again later.", false);
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                // Handle failure
+                addAssistantMessage("Connection failed. Please check if the backend server is running and reachable.", false);
             }
         });
     }

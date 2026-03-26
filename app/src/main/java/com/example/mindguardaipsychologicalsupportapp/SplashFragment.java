@@ -21,8 +21,11 @@ public class SplashFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Fixed: Updated action ID to match the one in nav_graph.xml
-                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_whyMindguardFragment);
+                if (com.example.mindguardaipsychologicalsupportapp.utils.NetworkUtils.isInternetAvailable(requireContext())) {
+                    Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_whyMindguardFragment);
+                } else {
+                    Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_networkErrorFragment);
+                }
             }
         });
 

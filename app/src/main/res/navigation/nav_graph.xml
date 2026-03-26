@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_splashFragment_to_whyMindguardFragment"
             app:destination="@id/whyMindguardFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_networkErrorFragment"
+            app:destination="@id/networkErrorFragment" />
     </fragment>
 
     <fragment
@@ -694,5 +697,17 @@
         android:name="com.example.mindguardaipsychologicalsupportapp.AIAnalysisFragment"
         android:label="AIAnalysisFragment"
         tools:layout="@layout/fragment_ai_analysis" />
+
+    <fragment
+        android:id="@+id/networkErrorFragment"
+        android:name="com.example.mindguardaipsychologicalsupportapp.NetworkErrorFragment"
+        android:label="NetworkErrorFragment"
+        tools:layout="@layout/fragment_network_error">
+        <action
+            android:id="@+id/action_networkErrorFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
+            app:popUpTo="@id/networkErrorFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

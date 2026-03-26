@@ -43,6 +43,21 @@ public class CreateAccountFragment extends Fragment {
                         return;
                     }
 
+                    if (name.length() <= 1) {
+                        Toast.makeText(getContext(), "Name must be more than one character", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!email.contains("@")) {
+                        Toast.makeText(getContext(), "Please enter a valid email address with @", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!isValidPassword(password)) {
+                        Toast.makeText(getContext(), "Password must have at least one capital letter, one number, and one special character", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     // Create user map for API
                     java.util.HashMap<String, Object> userMap = new java.util.HashMap<>();
                     userMap.put("username", name);
@@ -108,4 +123,20 @@ public class CreateAccountFragment extends Fragment {
 
         return view;
     }
+
+    private boolean isValidPassword(String password) {
+        if (password.length() < 6) return false;
+        boolean hasUpper = false;
+        boolean hasDigit = false;
+        boolean hasSpecial = false;
+        String specialChars = "!@#$%^&*()-_+=<>?/{}[]|";
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUpper = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else if (specialChars.indexOf(c) != -1) hasSpecial = true;
+        }
+        return hasUpper && hasDigit && hasSpecial;
+    }
+
 }
