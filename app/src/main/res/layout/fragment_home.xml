@@ -255,6 +255,7 @@
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp">
                         <TextView
+                            android:id="@+id/txtDailyWellnessScore"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"

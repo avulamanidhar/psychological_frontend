@@ -36,7 +36,7 @@ public class PrivacySecurityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_privacy_security, container, false);
 
 
-        apiService = RetrofitClient.getApiService();
+        apiService = RetrofitClient.getApiService(requireContext());
 
         view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
@@ -106,8 +106,13 @@ public class PrivacySecurityFragment extends Fragment {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (isAdded()) {
                     if (response.isSuccessful()) {
+                        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+                        prefs.edit().clear().apply();
                         Toast.makeText(requireContext(), "All your personal data has been deleted.", Toast.LENGTH_LONG).show();
-                        Navigation.findNavController(requireView()).navigate(R.id.action_privacySecurityFragment_to_homeFragment);
+                        androidx.navigation.NavOptions navOptions = new androidx.navigation.NavOptions.Builder()
+                                .setPopUpTo(R.id.initialLogoFragment, true)
+                                .build();
+                        Navigation.findNavController(requireView()).navigate(R.id.loginFragment, null, navOptions);
                     } else {
                         Toast.makeText(requireContext(), "Failed to delete data", Toast.LENGTH_SHORT).show();
                     }

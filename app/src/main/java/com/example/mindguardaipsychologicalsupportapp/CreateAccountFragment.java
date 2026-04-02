@@ -48,13 +48,30 @@ public class CreateAccountFragment extends Fragment {
                         return;
                     }
 
+                    if (name.matches("\\d+")) {
+                        Toast.makeText(getContext(), "Username cannot be only numbers", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     if (!email.contains("@")) {
                         Toast.makeText(getContext(), "Please enter a valid email address with @", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
+                    // Check if the part before @ is only numbers
+                    String emailPrefix = email.split("@")[0];
+                    if (emailPrefix.matches("\\d+")) {
+                        Toast.makeText(getContext(), "Kindly change your mail", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (email.length() < 8) {
+                        Toast.makeText(getContext(), "Email must be at least 8 characters long", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     if (!isValidPassword(password)) {
-                        Toast.makeText(getContext(), "Password must have at least one capital letter, one number, and one special character", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Password must be at least 8 characters long and have one capital letter, one number, and one special character", Toast.LENGTH_LONG).show();
                         return;
                     }
 
@@ -89,8 +106,10 @@ public class CreateAccountFragment extends Fragment {
                                     }
                                 } else {
                                     try {
-                                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
-                                        Toast.makeText(getContext(), "Registration failed: " + errorBody, Toast.LENGTH_LONG).show();
+                                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "{\"error\":\"Unknown error\"}";
+                                        org.json.JSONObject errorJson = new org.json.JSONObject(errorBody);
+                                        String errorMsg = errorJson.optString("error", "Registration failed");
+                                        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
                                         Toast.makeText(getContext(), "Registration failed: " + response.message(), Toast.LENGTH_SHORT).show();
                                     }
@@ -125,7 +144,7 @@ public class CreateAccountFragment extends Fragment {
     }
 
     private boolean isValidPassword(String password) {
-        if (password.length() < 6) return false;
+        if (password.length() < 8) return false;
         boolean hasUpper = false;
         boolean hasDigit = false;
         boolean hasSpecial = false;

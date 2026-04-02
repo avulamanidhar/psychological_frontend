@@ -34,7 +34,7 @@ public class EntryDetailsFragment extends Fragment {
             return view;
         }
 
-        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService(requireContext());
         api.getMoodDetail(entryId).enqueue(new retrofit2.Callback<MoodEntry>() {
             @Override
             public void onResponse(retrofit2.Call<MoodEntry> call, retrofit2.Response<MoodEntry> response) {

@@ -21,60 +21,76 @@ public class LoginFragment extends Fragment {
         com.google.android.material.textfield.TextInputLayout layoutEmail = view.findViewById(R.id.inputLayoutEmail);
         com.google.android.material.textfield.TextInputLayout layoutPassword = view.findViewById(R.id.inputLayoutPassword);
         
-        android.widget.EditText emailField = layoutEmail.getEditText();
-        android.widget.EditText passwordField = layoutPassword.getEditText();
+        android.widget.EditText emailField = layoutEmail != null ? layoutEmail.getEditText() : null;
+        android.widget.EditText passwordField = layoutPassword != null ? layoutPassword.getEditText() : null;
 
         Button signInButton = view.findViewById(R.id.signInButton);
-        signInButton.setOnClickListener(v -> {
-            String email = emailField != null ? emailField.getText().toString().trim() : "";
-            String password = passwordField != null ? passwordField.getText().toString().trim() : "";
+        if (signInButton != null) {
+            signInButton.setOnClickListener(v -> {
+                String email = emailField != null ? emailField.getText().toString().trim() : "";
+                String password = passwordField != null ? passwordField.getText().toString().trim() : "";
 
-            if (email.isEmpty() || password.isEmpty()) {
-                android.widget.Toast.makeText(getContext(), "Please enter both email and password", android.widget.Toast.LENGTH_SHORT).show();
-                return;
-            }
+                if (email.isEmpty() || password.isEmpty()) {
+                    android.widget.Toast.makeText(getContext(), "Please enter both email and password", android.widget.Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            java.util.Map<String, String> credentials = new java.util.HashMap<>();
-            credentials.put("username", email); 
-            credentials.put("password", password);
+                if (password.length() < 8) {
+                    android.widget.Toast.makeText(getContext(), "Password must be at least 8 characters long", android.widget.Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
-                .login(credentials)
-                .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
-                    @Override
-                    public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            String username = (String) response.body().get("username");
-                            String accessToken = (String) response.body().get("access");
-                            String refreshToken = (String) response.body().get("refresh");
-                            
-                            android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
-                            prefs.edit()
-                                .putString("user_name", username)
-                                .putString("auth_token", accessToken)
-                                .putString("refresh_token", refreshToken)
-                                .apply();
+                java.util.Map<String, String> credentials = new java.util.HashMap<>();
+                credentials.put("username", email); 
+                credentials.put("password", password);
 
-                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
-                        } else {
-                            android.widget.Toast.makeText(getContext(), "Login failed: Invalid credentials", android.widget.Toast.LENGTH_SHORT).show();
+                com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService()
+                    .login(credentials)
+                    .enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
+                        @Override
+                        public void onResponse(@NonNull retrofit2.Call<java.util.Map<String, Object>> call, @NonNull retrofit2.Response<java.util.Map<String, Object>> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                String username = (String) response.body().get("username");
+                                String accessToken = (String) response.body().get("access");
+                                String refreshToken = (String) response.body().get("refresh");
+                                
+                                android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
+                                prefs.edit()
+                                    .putString("user_name", username)
+                                    .putString("auth_token", accessToken)
+                                    .putString("refresh_token", refreshToken)
+                                    .apply();
+
+                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                            } else {
+                                android.widget.Toast.makeText(getContext(), "Login failed: Invalid credentials", android.widget.Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(retrofit2.Call<java.util.Map<String, Object>> call, Throwable t) {
-                        android.widget.Toast.makeText(getContext(), "Network error: " + t.getMessage(), android.widget.Toast.LENGTH_SHORT).show();
-                    }
-                });
-        });
+                        @Override
+                        public void onFailure(@NonNull retrofit2.Call<java.util.Map<String, Object>> call, @NonNull Throwable t) {
+                            android.widget.Toast.makeText(getContext(), "Network error: " + t.getMessage(), android.widget.Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            });
+        }
 
-        view.findViewById(R.id.forgotPasswordText).setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
-        });
+        View forgotPassword = view.findViewById(R.id.forgotPasswordText);
+        if (forgotPassword != null) {
+            forgotPassword.setOnClickListener(v -> {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
+            });
+        }
 
-        view.findViewById(R.id.backButton).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        View backBtn = view.findViewById(R.id.backButton);
+        if (backBtn != null) {
+            backBtn.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        }
 
-        view.findViewById(R.id.signUpText).setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        View signUpText = view.findViewById(R.id.signUpText);
+        if (signUpText != null) {
+            signUpText.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        }
 
         return view;
     }

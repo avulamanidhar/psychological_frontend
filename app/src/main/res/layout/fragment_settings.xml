@@ -155,6 +155,20 @@
                 android:clickable="true"
                 android:focusable="true" />
 
+            <!-- Delete Account -->
+            <TextView
+                android:id="@+id/btnDeleteAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:text="Delete Account"
+                android:textColor="#B71C1C"
+                android:textStyle="normal"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true" />
+
             <TextView
                 android:id="@+id/appVersionText"
                 android:layout_width="wrap_content"

@@ -23,6 +23,12 @@ import java.util.List;
 
 public class MoodHistoryFragment extends Fragment {
 
+    private LinearLayout datesLayout;
+    private LinearLayout daysOfWeekLayout;
+    private LinearLayout listContainer;
+    private List<MoodEntry> allEntries;
+    private int selectedOffset = 6; // 0 to 6 (6 is today)
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,34 +42,19 @@ public class MoodHistoryFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.moodSelectionFragment));
         }
 
-        LinearLayout listContainer = view.findViewById(R.id.listContainer);
+        listContainer = view.findViewById(R.id.listContainer);
+        daysOfWeekLayout = view.findViewById(R.id.daysOfWeekLayout);
+        datesLayout = view.findViewById(R.id.datesLayout);
+
+        setupCalendarUI();
 
         MoodEntryStorage.getAll(requireContext(), new MoodEntryStorage.MoodFetchCallback() {
             @Override
             public void onSuccess(List<MoodEntry> entries) {
                 if (getActivity() == null) return;
                 getActivity().runOnUiThread(() -> {
-                    listContainer.removeAllViews();
-                    if (entries.isEmpty()) {
-                        TextView empty = new TextView(requireContext());
-                        empty.setText("No entries yet. Tap + Log New to add your first mood.");
-                        empty.setTextColor(getResources().getColor(R.color.desc_gray));
-                        empty.setTextSize(14f);
-                        empty.setPadding(8, 24, 8, 0);
-                        listContainer.addView(empty);
-                        return;
-                    }
-
-                    for (MoodEntry e : entries) {
-                        View row = inflater.inflate(R.layout.item_mood_history, listContainer, false);
-                        bindRow(row, e);
-                        row.setOnClickListener(v -> {
-                            Bundle b = new Bundle();
-                            b.putString("entryId", e.id);
-                            Navigation.findNavController(view).navigate(R.id.action_moodHistoryFragment_to_entryDetailsFragment, b);
-                        });
-                        listContainer.addView(row);
-                    }
+                    allEntries = entries;
+                    updateListForSelectedDate();
                 });
             }
 
@@ -84,6 +75,131 @@ public class MoodHistoryFragment extends Fragment {
         setupBottomNavigation(view);
 
         return view;
+    }
+
+    private void setupCalendarUI() {
+        daysOfWeekLayout.removeAllViews();
+        datesLayout.removeAllViews();
+        
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DAY_OF_YEAR, -6); // Start from 6 days ago
+        
+        java.text.SimpleDateFormat dayFormat = new java.text.SimpleDateFormat("E", java.util.Locale.getDefault());
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("d", java.util.Locale.getDefault());
+
+        for (int i = 0; i < 7; i++) {
+            final int index = i;
+            String dayStr = dayFormat.format(cal.getTime()).substring(0, 1);
+            String dateStr = dateFormat.format(cal.getTime());
+
+            // Build Day Header
+            TextView tvDay = new TextView(requireContext());
+            LinearLayout.LayoutParams pDay = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            tvDay.setLayoutParams(pDay);
+            tvDay.setGravity(android.view.Gravity.CENTER);
+            tvDay.setText(dayStr);
+            tvDay.setTextColor(getResources().getColor(R.color.desc_gray));
+            tvDay.setTextSize(12f);
+            tvDay.setTypeface(null, android.graphics.Typeface.BOLD);
+            daysOfWeekLayout.addView(tvDay);
+
+            // Build Date Cell
+            LinearLayout cellLayout = new LinearLayout(requireContext());
+            LinearLayout.LayoutParams pCell = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            cellLayout.setLayoutParams(pCell);
+            cellLayout.setGravity(android.view.Gravity.CENTER);
+            cellLayout.setOrientation(LinearLayout.VERTICAL);
+
+            if (i == selectedOffset) {
+                com.google.android.material.card.MaterialCardView card = new com.google.android.material.card.MaterialCardView(requireContext());
+                LinearLayout.LayoutParams pCard = new LinearLayout.LayoutParams((int)(40*getResources().getDisplayMetrics().density), (int)(40*getResources().getDisplayMetrics().density));
+                card.setLayoutParams(pCard);
+                card.setCardBackgroundColor(getResources().getColor(R.color.button_blue));
+                card.setRadius(20*getResources().getDisplayMetrics().density);
+                card.setCardElevation(0);
+                
+                TextView tvDate = new TextView(requireContext());
+                tvDate.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                tvDate.setGravity(android.view.Gravity.CENTER);
+                tvDate.setText(dateStr);
+                tvDate.setTextColor(getResources().getColor(R.color.white));
+                tvDate.setTextSize(12f);
+                tvDate.setTypeface(null, android.graphics.Typeface.BOLD);
+                card.addView(tvDate);
+                cellLayout.addView(card);
+            } else {
+                TextView tvDate = new TextView(requireContext());
+                tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                tvDate.setText(dateStr);
+                tvDate.setTextColor(getResources().getColor(R.color.desc_gray));
+                tvDate.setTextSize(12f);
+                cellLayout.addView(tvDate);
+            }
+
+            View dot = new View(requireContext());
+            LinearLayout.LayoutParams pDot = new LinearLayout.LayoutParams((int)(6*getResources().getDisplayMetrics().density), (int)(6*getResources().getDisplayMetrics().density));
+            pDot.topMargin = (int)(6*getResources().getDisplayMetrics().density);
+            dot.setLayoutParams(pDot);
+            dot.setBackgroundResource(R.drawable.dot_calendar);
+            dot.setVisibility(hasEntryOnDate(cal.getTime()) ? View.VISIBLE : View.INVISIBLE);
+            cellLayout.addView(dot);
+
+            cellLayout.setOnClickListener(v -> {
+                selectedOffset = index;
+                setupCalendarUI();
+                updateListForSelectedDate();
+            });
+
+            datesLayout.addView(cellLayout);
+            cal.add(java.util.Calendar.DAY_OF_YEAR, 1);
+        }
+    }
+
+    private boolean hasEntryOnDate(java.util.Date date) {
+        if (allEntries == null) return false;
+        long targetEnd = date.getTime();
+        for (MoodEntry e : allEntries) {
+            if (TimeFormatUtils.isSameDay(e.timestampMillis, targetEnd)) return true;
+        }
+        return false;
+    }
+
+    private void updateListForSelectedDate() {
+        if (allEntries == null) return;
+        listContainer.removeAllViews();
+        
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DAY_OF_YEAR, -6 + selectedOffset);
+        long targetDateMs = cal.getTimeInMillis();
+
+        java.util.List<MoodEntry> filtered = new java.util.ArrayList<>();
+        for (MoodEntry e : allEntries) {
+            if (TimeFormatUtils.isSameDay(e.timestampMillis, targetDateMs)) {
+                filtered.add(e);
+            }
+        }
+
+        if (filtered.isEmpty()) {
+            TextView empty = new TextView(requireContext());
+            empty.setText("No entries on this day.");
+            empty.setTextColor(getResources().getColor(R.color.desc_gray));
+            empty.setTextSize(14f);
+            empty.setPadding(8, 24, 8, 0);
+            listContainer.addView(empty);
+            return;
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        for (MoodEntry e : filtered) {
+            View row = inflater.inflate(R.layout.item_mood_history, listContainer, false);
+            bindRow(row, e);
+            row.setOnClickListener(v -> {
+                Bundle b = new Bundle();
+                b.putString("entryId", e.id);
+                Navigation.findNavController(getView()).navigate(R.id.action_moodHistoryFragment_to_entryDetailsFragment, b);
+            });
+            listContainer.addView(row);
+        }
     }
 
     private void setupBottomNavigation(View view) {

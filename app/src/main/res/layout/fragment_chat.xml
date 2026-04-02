@@ -109,6 +109,38 @@
                 style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Suggest a song"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="#E0E0E0" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="I feel lonely"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="#E0E0E0" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Tell me a joke"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="#E0E0E0" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Sleep tips?"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="#E0E0E0" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="I had a great day!"
                 app:chipBackgroundColor="@color/white"
                 app:chipStrokeColor="#E0E0E0" />
@@ -188,7 +220,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_36" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_75" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mood" android:textColor="@color/desc_gray" android:textSize="10sp" />
             </LinearLayout>
 

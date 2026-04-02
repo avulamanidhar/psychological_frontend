@@ -154,4 +154,10 @@ public interface MindGuardApiService {
 
     @DELETE("api/user/delete-data/")
     Call<Void> deleteUserData();
+
+    @GET("api/recommendations/by-emotion/")
+    Call<Map<String, Object>> getRecommendationsByEmotion(@Query("emotion") String emotion);
+
+    @POST("api/mood/update/")
+    Call<Map<String, Object>> updateMood(@Body Map<String, Object> data);
 }

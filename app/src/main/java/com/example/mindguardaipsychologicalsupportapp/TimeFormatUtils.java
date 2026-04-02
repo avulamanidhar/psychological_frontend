@@ -37,10 +37,17 @@ public final class TimeFormatUtils {
         return monthDay.format(date) + time.format(date);
     }
 
+    public static boolean isSameDay(long timestampA, long timestampB) {
+        Calendar a = Calendar.getInstance();
+        a.setTimeInMillis(timestampA);
+        Calendar b = Calendar.getInstance();
+        b.setTimeInMillis(timestampB);
+        return isSameDay(a, b);
+    }
+
     private static boolean isSameDay(@NonNull Calendar a, @NonNull Calendar b) {
         return a.get(Calendar.ERA) == b.get(Calendar.ERA)
                 && a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
                 && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
     }
 }
-

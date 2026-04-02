@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.mindguardaipsychologicalsupportapp.api.ChatBotApiService;
+import com.example.mindguardaipsychologicalsupportapp.api.ChatRetrofitClient;
 import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
 import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
 import com.google.android.material.chip.Chip;
@@ -39,9 +41,7 @@ public class ChatFragment extends Fragment {
     private ScrollView chatScrollView;
     private EditText etChatMessage;
     private String selectedLanguage;
-    private String currentMode = "General"; // Modes: General, Calm, CBT, Listener
     private String userName;
-    private Random random = new Random();
 
     @Nullable
     @Override
@@ -97,14 +97,12 @@ public class ChatFragment extends Fragment {
                             addAssistantMessage(text, false);
                         }
                     }
-                } else {
-                    addAssistantMessage(getGreeting(selectedLanguage), true);
-                }
+                } 
             }
 
             @Override
             public void onFailure(Call<List<Map<String, Object>>> call, Throwable t) {
-                addAssistantMessage(getGreeting(selectedLanguage), true);
+                // No history or failed to load history
             }
         });
     }
@@ -116,42 +114,35 @@ public class ChatFragment extends Fragment {
         addUserMessage(msg, false); // Display locally first
         etChatMessage.setText("");
 
-        // Check for mode switches (optional: could also be handled by backend)
-        if (msg.toLowerCase().contains("switch to calm mode")) {
-            currentMode = "Calm";
-        } else if (msg.toLowerCase().contains("switch to cbt coach mode")) {
-            currentMode = "CBT";
-        } else if (msg.toLowerCase().contains("switch to listener mode")) {
-            currentMode = "Listener";
-        } else if (msg.toLowerCase().contains("switch to general mode")) {
-            currentMode = "General";
-        }
+        // Show thinking state (simulated)
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            MindGuardApiService api = RetrofitClient.getApiService(requireContext());
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("text", msg);
+            payload.put("mode", "General"); // Can be dynamic based on UI in future
+            payload.put("language", selectedLanguage);
 
-        MindGuardApiService api = RetrofitClient.getApiService(requireContext());
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("text", msg);
-        payload.put("mode", currentMode);
-        payload.put("language", selectedLanguage);
-
-        api.sendChatMessage(payload).enqueue(new Callback<Map<String, Object>>() {
-            @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Map<String, Object> aiMsgMap = (Map<String, Object>) response.body().get("ai_message");
-                    if (aiMsgMap != null) {
-                        String aiText = (String) aiMsgMap.get("text");
-                        addAssistantMessage(aiText, false);
+            api.sendChatMessage(payload).enqueue(new Callback<Map<String, Object>>() {
+                @Override
+                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        String aiText = (String) response.body().get("reply");
+                        if (aiText != null) {
+                            addAssistantMessage(aiText, false);
+                        } else {
+                            addAssistantMessage("Error: AI response is empty.", false);
+                        }
+                    } else {
+                        addAssistantMessage("Error: Failed to connect to MindGuard backend (" + response.code() + ")", false);
                     }
-                } else {
-                    addAssistantMessage("Error: " + response.code() + " - I'm having trouble thinking right now. Please try again later.", false);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                addAssistantMessage("Connection failed. Please check if the backend server is running and reachable.", false);
-            }
-        });
+                @Override
+                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                    addAssistantMessage("Error: Backend is unreachable (" + t.getMessage() + ")", false);
+                }
+            });
+        }, 500); 
     }
 
     private void saveMessage(String text, boolean isUser) {
@@ -159,66 +150,7 @@ public class ChatFragment extends Fragment {
         // It's kept for backward compatibility if needed, but not used in the new flow.
     }
 
-    private String getGreeting(String lang) {
-        switch (lang) {
-            case "Telugu": return "నమస్కారం మవా! నేను మైండ్‌గార్డ్ AIని. నీకు ఎలా సహాయపడగలను? ఈ రోజు ఎలా ఉంది?";
-            case "Hindi": return "नमस्ते दोस्त! मैं माइंडगार्ड एआई हूँ। मैं आपकी कैसे मदद कर सकता हूँ? आज का दिन कैसा रहा?";
-            default: return "Hello! I'm MindGuard AI, your supportive companion. How are you feeling today? 💙";
-        }
-    }
 
-    private String generateTherapeuticResponse(String userMsg, String lang) {
-        userMsg = userMsg.toLowerCase();
-
-        // Risk Detection
-        if (userMsg.contains("die") || userMsg.contains("hopeless") || userMsg.contains("worthless") || 
-            userMsg.contains("chavali") || userMsg.contains("end my life") || userMsg.contains("disappear")) {
-            if (lang.equals("Telugu")) return "మవా, నువ్వు అలా మాట్లాడుతుంటే నాకు చాలా బాధగా ఉంది. నీ ప్రాణం చాలా విలువైనది. దయచేసి నీకు దగ్గరగా ఉన్న వారితో లేదా ఒక డాక్టర్‌తో మాట్లాడు. నేను నీకు తోడుగా ఉంటాను, కానీ ప్రొఫెషనల్ హెల్ప్ తీసుకోవడం చాలా ముఖ్యం. 💙";
-            return "I hear how much pain you're in, and it's okay to feel overwhelmed, but please know you're not alone. Your life is valuable. I strongly encourage you to reach out to a trusted person or a professional counselor right now. I'm here to support you through this. 💙";
-        }
-
-        // Mode Specific Logic
-        if (currentMode.equals("Listener")) {
-            if (lang.equals("Telugu")) return "అవునా మవా.. వింటున్నాను. ఇంకా చెప్పు, నీ మనసులో ఏముందో అంతా ఖాళీ చెయ్యి.";
-            return "I hear you. That sounds like a lot to carry. I'm just here to listen. Go on.";
-        }
-
-        if (currentMode.equals("Calm")) {
-            if (lang.equals("Telugu")) return "ప్రశాంతంగా ఉండు మవా. ఒక్క నిమిషం కళ్లు మూసుకుని గాలి పీల్చుకో. నేను నీ పక్కనే ఉన్నాను. 🌊";
-            return "Just breathe slowly with me. Focus on the comfort of this moment. You are safe. 🌊";
-        }
-
-        if (currentMode.equals("CBT")) {
-            return "Let's look at this. \nSituation: " + userMsg + "\nThought: What's the main thought here?\nEmotion: How does it make you feel?\nCan we find evidence for or against this thought? 🧠";
-        }
-
-        // Anxiety Support
-        if (userMsg.contains("panic") || userMsg.contains("anxious") || userMsg.contains("stress") || 
-            userMsg.contains("tension") || userMsg.contains("భయం") || userMsg.contains("టెన్షన్")) {
-            if (lang.equals("Telugu")) return "మవా, కంగారు పడకు. మనం 5-4-3-2-1 గ్రౌండింగ్ చేద్దామా? నీ చుట్టూ ఉన్న 5 వస్తువులని చూడు. మెల్లగా గాలి పీల్చుకో. 🌿";
-            return "I can feel your anxiety. Let's try a quick grounding exercise. Name 5 things you can see around you right now. Keep your breaths slow and steady. 🌿";
-        }
-
-        // Telugu logic
-        if (lang.equals("Telugu")) {
-            if (userMsg.contains("బాధ") || userMsg.contains("కష్టం") || userMsg.contains("sad")) {
-                return "ఫీల్ అవ్వకు మవా. ఒక్కోసారి ఇలాగే ఉంటుంది. నేను ఉన్నాను కదా! అసలు ఏమైంది? 💙";
-            }
-            if (userMsg.contains("హాయ్") || userMsg.contains("hi") || userMsg.contains("hello")) {
-                return "హాయ్ మవా! ఎలా ఉన్నావ్? ఈరోజు విశేషాలు ఏంటి? 😊";
-            }
-            return "అర్థం చేసుకున్నాను మవా. ఇంకా చెప్పు.. నీకు ఏమనిపిస్తుంది? ✨";
-        }
-
-        // Default Support
-        if (userMsg.contains("sad") || userMsg.contains("bad")) {
-            return "I'm so sorry you're feeling down. It's totally okay to feel this way. Want to tell your 'big sibling' AI what happened? 💙";
-        } else if (userMsg.contains("happy") || userMsg.contains("good")) {
-            return "That's amazing! I'm so happy for you, mawa! What's making today so special? 😊";
-        }
-
-        return "I hear you. Processing these thoughts is a brave step. I'm right here with you. What's on your mind? ✨";
-    }
 
     private void addUserMessage(String text, boolean save) {
         View userMsgView = getLayoutInflater().inflate(R.layout.item_chat_user, chatMessagesContainer, false);

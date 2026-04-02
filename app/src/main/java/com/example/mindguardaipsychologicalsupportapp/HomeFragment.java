@@ -21,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class HomeFragment extends Fragment {
 
-    private TextView txtGreeting, txtMentalHealthScore, txtLatestMoodName, txtRecommendation;
+    private TextView txtGreeting, txtMentalHealthScore, txtLatestMoodName, txtRecommendation, txtDailyWellnessScore;
     private String userName;
 
     @Nullable
@@ -31,6 +31,7 @@ public class HomeFragment extends Fragment {
 
         txtGreeting = view.findViewById(R.id.txtGreeting);
         txtMentalHealthScore = view.findViewById(R.id.txtMentalHealthScore);
+        txtDailyWellnessScore = view.findViewById(R.id.txtDailyWellnessScore);
         txtLatestMoodName = view.findViewById(R.id.txtLatestMoodName);
         txtRecommendation = view.findViewById(R.id.txtRecommendation);
 
@@ -137,7 +138,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchDashboardData() {
-        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService();
+        com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService api = com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient.getApiService(requireContext());
         api.getDashboardSummary(userName).enqueue(new retrofit2.Callback<java.util.Map<String, Object>>() {
             @Override
             public void onResponse(retrofit2.Call<java.util.Map<String, Object>> call, retrofit2.Response<java.util.Map<String, Object>> response) {
@@ -152,8 +153,11 @@ public class HomeFragment extends Fragment {
                         }
 
                         // Update Mental Health Score
-                        if (txtMentalHealthScore != null && data.containsKey("mental_health_score")) {
-                            txtMentalHealthScore.setText(String.valueOf(data.get("mental_health_score")));
+                        if (data.containsKey("mental_health_score")) {
+                            Object scoreObj = data.get("mental_health_score");
+                            String scoreStr = String.valueOf(scoreObj);
+                            if (txtMentalHealthScore != null) txtMentalHealthScore.setText(scoreStr + "%");
+                            if (txtDailyWellnessScore != null) txtDailyWellnessScore.setText(scoreStr);
                         }
 
                         // Update Recommendation

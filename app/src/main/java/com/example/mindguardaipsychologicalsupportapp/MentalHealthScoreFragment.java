@@ -28,7 +28,7 @@ import retrofit2.Response;
 
 public class MentalHealthScoreFragment extends Fragment {
 
-    private TextView txtMainScore, txtMoodScore, txtStressScore, txtSleepScore, txtSocialScore;
+    private TextView txtMainScore, txtMoodScore, txtStressScore, txtSleepScore, txtSocialScore, txtAiAnalysis;
     private ProgressBar circularProgressBar, progressMood, progressStress, progressSleep, progressSocial;
     private View txtScoreLabel;
 
@@ -52,6 +52,8 @@ public class MentalHealthScoreFragment extends Fragment {
 
         txtSocialScore = view.findViewById(R.id.txtSocialScore);
         progressSocial = view.findViewById(R.id.progressSocial);
+        
+        txtAiAnalysis = view.findViewById(R.id.txtAiAnalysis);
 
         view.findViewById(R.id.btnBack).setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
 
@@ -64,7 +66,7 @@ public class MentalHealthScoreFragment extends Fragment {
         SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String userName = prefs.getString("user_name", "User");
 
-        MindGuardApiService api = RetrofitClient.getApiService();
+        MindGuardApiService api = RetrofitClient.getApiService(requireContext());
         api.getHealthScoreDetail(userName).enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
@@ -76,6 +78,10 @@ public class MentalHealthScoreFragment extends Fragment {
                     int stress = ((Double) data.get("stress_score")).intValue();
                     int sleep = ((Double) data.get("sleep_score")).intValue();
                     int social = ((Double) data.get("social_score")).intValue();
+                    
+                    if (txtAiAnalysis != null && data.containsKey("recommendation")) {
+                        txtAiAnalysis.setText((String) data.get("recommendation"));
+                    }
                     
                     animateScores(main, mood, stress, sleep, social);
                 }

@@ -46,7 +46,7 @@ public class AccountInfoFragment extends Fragment {
         SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String userName = prefs.getString("user_name", "User");
 
-        MindGuardApiService api = RetrofitClient.getApiService();
+        MindGuardApiService api = RetrofitClient.getApiService(requireContext());
         api.getUserProfile(userName).enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {

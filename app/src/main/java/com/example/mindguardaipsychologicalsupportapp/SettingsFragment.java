@@ -75,7 +75,45 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
                 prefs.edit().clear().apply();
                 Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).navigate(R.id.initialLogoFragment);
+                androidx.navigation.NavOptions navOptions = new androidx.navigation.NavOptions.Builder()
+                        .setPopUpTo(R.id.initialLogoFragment, true)
+                        .build();
+                Navigation.findNavController(view).navigate(R.id.loginFragment, null, navOptions);
+            });
+        }
+
+        // Delete Account
+        View deleteAccountBtn = view.findViewById(R.id.btnDeleteAccount);
+        if (deleteAccountBtn != null) {
+            deleteAccountBtn.setOnClickListener(v -> {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Delete Account")
+                    .setMessage("Are you sure you want to delete your account? This will permanently remove all your data.")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        RetrofitClient.getApiService(requireContext()).deleteUserData().enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                                    prefs.edit().clear().apply();
+                                    Toast.makeText(requireContext(), "Account deleted successfully", Toast.LENGTH_SHORT).show();
+                                    androidx.navigation.NavOptions navOptions = new androidx.navigation.NavOptions.Builder()
+                                            .setPopUpTo(R.id.initialLogoFragment, true)
+                                            .build();
+                                    Navigation.findNavController(view).navigate(R.id.loginFragment, null, navOptions);
+                                } else {
+                                    Toast.makeText(requireContext(), "Failed to delete account: " + response.code(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(requireContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
             });
         }
         
