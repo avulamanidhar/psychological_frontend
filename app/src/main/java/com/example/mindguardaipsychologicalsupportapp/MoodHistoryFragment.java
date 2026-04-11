@@ -176,6 +176,7 @@ public class MoodHistoryFragment extends Fragment {
         for (MoodEntry e : allEntries) {
             if (TimeFormatUtils.isSameDay(e.timestampMillis, targetDateMs)) {
                 filtered.add(e);
+
             }
         }
 

@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
 import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+import com.example.mindguardaipsychologicalsupportapp.utils.SessionManager;
 
 import org.json.JSONObject;
 
@@ -106,13 +107,7 @@ public class PrivacySecurityFragment extends Fragment {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (isAdded()) {
                     if (response.isSuccessful()) {
-                        android.content.SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", android.content.Context.MODE_PRIVATE);
-                        prefs.edit().clear().apply();
-                        Toast.makeText(requireContext(), "All your personal data has been deleted.", Toast.LENGTH_LONG).show();
-                        androidx.navigation.NavOptions navOptions = new androidx.navigation.NavOptions.Builder()
-                                .setPopUpTo(R.id.initialLogoFragment, true)
-                                .build();
-                        Navigation.findNavController(requireView()).navigate(R.id.loginFragment, null, navOptions);
+                        SessionManager.logoutAndClear(requireView(), "All your personal data has been deleted.");
                     } else {
                         Toast.makeText(requireContext(), "Failed to delete data", Toast.LENGTH_SHORT).show();
                     }

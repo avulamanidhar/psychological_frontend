@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 
 import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
 import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+import com.example.mindguardaipsychologicalsupportapp.utils.SessionManager;
 
 import java.util.Map;
 
@@ -72,13 +73,7 @@ public class SettingsFragment extends Fragment {
         View logoutBtn = view.findViewById(R.id.btnLogout);
         if (logoutBtn != null) {
             logoutBtn.setOnClickListener(v -> {
-                SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-                prefs.edit().clear().apply();
-                Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
-                androidx.navigation.NavOptions navOptions = new androidx.navigation.NavOptions.Builder()
-                        .setPopUpTo(R.id.initialLogoFragment, true)
-                        .build();
-                Navigation.findNavController(view).navigate(R.id.loginFragment, null, navOptions);
+                SessionManager.logoutAndClear(view, "Logged out successfully");
             });
         }
 
@@ -94,13 +89,7 @@ public class SettingsFragment extends Fragment {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
-                                    SharedPreferences prefs = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-                                    prefs.edit().clear().apply();
-                                    Toast.makeText(requireContext(), "Account deleted successfully", Toast.LENGTH_SHORT).show();
-                                    androidx.navigation.NavOptions navOptions = new androidx.navigation.NavOptions.Builder()
-                                            .setPopUpTo(R.id.initialLogoFragment, true)
-                                            .build();
-                                    Navigation.findNavController(view).navigate(R.id.loginFragment, null, navOptions);
+                                    SessionManager.logoutAndClear(view, "Account deleted successfully");
                                 } else {
                                     Toast.makeText(requireContext(), "Failed to delete account: " + response.code(), Toast.LENGTH_SHORT).show();
                                 }

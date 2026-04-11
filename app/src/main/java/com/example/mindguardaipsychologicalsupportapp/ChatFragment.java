@@ -21,6 +21,7 @@ import com.example.mindguardaipsychologicalsupportapp.api.ChatBotApiService;
 import com.example.mindguardaipsychologicalsupportapp.api.ChatRetrofitClient;
 import com.example.mindguardaipsychologicalsupportapp.api.MindGuardApiService;
 import com.example.mindguardaipsychologicalsupportapp.api.RetrofitClient;
+import com.example.mindguardaipsychologicalsupportapp.utils.SessionManager;
 import com.google.android.material.chip.Chip;
 
 import java.text.SimpleDateFormat;
@@ -66,8 +67,10 @@ public class ChatFragment extends Fragment {
             View child = chipsContainer.getChildAt(i);
             if (child instanceof Chip) {
                 ((Chip) child).setOnClickListener(v -> {
-                    etChatMessage.setText(((Chip) v).getText().toString());
-                    sendMessage();
+                    String suggestion = ((Chip) v).getText().toString();
+                    etChatMessage.setText(""); // clear any existing text
+                    addUserMessage(suggestion, false);
+                    sendApiMessage(suggestion);
                 });
             }
         }
@@ -97,7 +100,9 @@ public class ChatFragment extends Fragment {
                             addAssistantMessage(text, false);
                         }
                     }
-                } 
+                } else if (response.code() == 401) {
+                    SessionManager.logoutAndClear(requireView(), "Session expired. Please log in again.");
+                }
             }
 
             @Override
@@ -111,9 +116,13 @@ public class ChatFragment extends Fragment {
         String msg = etChatMessage.getText().toString().trim();
         if (msg.isEmpty()) return;
 
-        addUserMessage(msg, false); // Display locally first
         etChatMessage.setText("");
+        addUserMessage(msg, false); // Display locally first
 
+        sendApiMessage(msg);
+    }
+    
+    private void sendApiMessage(String msg) {
         // Show thinking state (simulated)
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             MindGuardApiService api = RetrofitClient.getApiService(requireContext());
@@ -131,6 +140,10 @@ public class ChatFragment extends Fragment {
                             addAssistantMessage(aiText, false);
                         } else {
                             addAssistantMessage("Error: AI response is empty.", false);
+                        }
+                    } else if (response.code() == 401) {
+                        if (isAdded() && getView() != null) {
+                            SessionManager.logoutAndClear(requireView(), "Session expired. Please log in again.");
                         }
                     } else {
                         addAssistantMessage("Error: Failed to connect to MindGuard backend (" + response.code() + ")", false);
